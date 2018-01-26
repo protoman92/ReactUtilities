@@ -1,5 +1,5 @@
 {
-  "name": "reactutilities",
+  "name": "reactutilities-js",
   "version": "1.0.0",
   "description": "Utilities for React applications.",
   "main": "./dist/src/index.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/protoman92/ReactUtilities.git"
+    "url": "git+https://github.com/protoman92/ReactUtilities-JS.git"
   },
   "author": "Hai Pham",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/protoman92/ReactUtilities/issues"
+    "url": "https://github.com/protoman92/ReactUtilities-JS/issues"
   },
-  "homepage": "https://github.com/protoman92/ReactUtilities#readme",
+  "homepage": "https://github.com/protoman92/ReactUtilities-JS#readme",
   "dependencies": {
     "@types/react": "^16.0.35",
     "@types/react-router": "^4.0.21",
