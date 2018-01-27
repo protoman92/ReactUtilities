@@ -1,7 +1,7 @@
 import { Observable, Observer, Subscription } from 'rxjs';
 import { Nullable, Try } from 'javascriptutilities';
 import { State as S } from 'typesafereduxstate-js';
-import { DispatchReducer, ReduxStore } from 'reactiveredux-js';
+import { DispatchReducer, ReduxStore as Store } from 'reactiveredux-js';
 import * as MVVM from './../../../mvvm';
 import * as Base from './base';
 
@@ -13,7 +13,7 @@ export namespace Action {
    * @extends {Base.Action.Type} Base action extension.
    */
   export interface CreatorType extends Base.Action.Type {
-    createUpdateAction(error: Nullable<Error>): ReduxStore.Dispatch.Action.Type<Nullable<Error>>;
+    createUpdateAction(error: Nullable<Error>): Store.Dispatch.Action.Type<Nullable<Error>>;
   }
 
   /**
@@ -44,7 +44,7 @@ export namespace Action {
    * @param {ReduxStore.Dispatch.Action.Type<any>} action An Action instance.
    * @returns {boolean} A boolean value.
    */
-  export function isInstance(action: ReduxStore.Dispatch.Action.Type<any>): boolean {
+  export function isInstance(action: Store.Dispatch.Action.Type<any>): boolean {
     switch (action.id) {
       case UPDATE_ERROR_ACTION: return true;
       default: return false;
@@ -58,7 +58,7 @@ export namespace Reducer {
    * @returns {DispatchReducer<any>} A DispatchReducer instance.
    */
   export let createDefault = (): DispatchReducer<any> => {
-    return (state: S.Self<any>, action: ReduxStore.Dispatch.Action.Type<any>) => {
+    return (state: S.Self<any>, action: Store.Dispatch.Action.Type<any>) => {
       switch (action.id) {
         case Action.UPDATE_ERROR_ACTION:
           return state.updatingValue(action.fullValuePath, action.payload);
@@ -77,7 +77,7 @@ export namespace Provider {
    */
   export interface Type extends Base.Provider.Type {
     action: Action.ProviderType;
-    store: ReduxStore.Dispatch.Self;
+    store: Store.Dispatch.Self;
   }
 }
 
@@ -99,10 +99,6 @@ export namespace ViewModel {
 
     public get screen(): Nullable<MVVM.Navigation.Screen.Type> {
       return this.baseVM.screen;
-    }
-
-    public get fullErrorValuePath(): string {
-      return this.baseVM.fullErrorValuePath;
     }
 
     public constructor(provider: Provider.Type) {

@@ -95,10 +95,6 @@ export namespace ViewModel {
       return this.baseVM.screen;
     }
 
-    public get fullErrorValuePath(): string {
-      return this.baseVM.fullErrorValuePath;
-    }
-
     public constructor(provider: Provider.Type) {
       this.provider = provider;
       this.subscription = new Subscription();

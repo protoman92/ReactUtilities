@@ -1,15 +1,17 @@
 import { Subscription } from 'rxjs';
 import * as React from 'react';
 import { Component, ReactNode } from 'react';
+import { Try } from 'javascriptutilities';
 import { State } from 'typesafereduxstate-js';
 import * as Presets from './presets';
-import { ViewModel } from './Dependency';
+import { ViewModel, Identity } from './Dependency';
 
 export namespace Props {
   /**
    * Props type for progress display component.
    */
   export interface Type {
+    identity?: Identity.ProviderType;
     viewModel: ViewModel.Self;
 
     /**
@@ -75,10 +77,18 @@ export class Self extends Component<Props.Type,State.Self<any>> {
   }
 
   public render(): JSX.Element {
+    let props = this.props;
     let viewModel = this.viewModel;
-    let enabled = viewModel.progressForState(this.state).getOrElse(false);
-    let identity = viewModel.identitySelector();
+
+    let enabled = viewModel.progressForState(this.state)
+      .map(v => typeof v === 'boolean' ? v : true)
+      .getOrElse(false);
+
     let displayComponent = enabled ? this.createDisplayComponent() : <div/>;
+
+    let identity = Try.unwrap(props.identity)
+      .flatMap(v => Try.unwrap(v.progress))
+      .getOrElse(() => Identity.createDefaultSelector());
 
     return <div {...identity.containerIdentity(enabled).value}>
       <div {...identity.backgroundIdentity(enabled).value}/>

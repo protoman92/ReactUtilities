@@ -67,7 +67,6 @@ export namespace ViewModel {
    * @extends {Type} Type extension.
    */
   export interface DisplayType extends MVVM.ViewModel.ReduxType, Type {
-    fullErrorValuePath: Readonly<string>;
     errorForState(state: Readonly<Nullable<S.Self<any>>>): Try<Error>;
   }
 
@@ -81,6 +80,13 @@ export namespace ViewModel {
   }
 
   /**
+   * Provide view model for error display component.
+   */
+  export interface ProviderType {
+    progressDisplay_viewModel(): ViewModel.DisplayType;
+  }
+
+  /**
    * Implementation of the base view model.
    * @implements {DisplayType} Display type implementation.
    */
@@ -91,7 +97,7 @@ export namespace ViewModel {
       return undefined;
     }
 
-    public get fullErrorValuePath(): string {
+    private get fullErrorValuePath(): string {
       return this.provider.action.error.fullErrorValuePath;
     }
 

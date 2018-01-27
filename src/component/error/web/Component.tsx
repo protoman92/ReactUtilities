@@ -11,7 +11,7 @@ export namespace Props {
    * Props type for error display component.
    */
   export interface Type {
-    identity: Identity.ProviderType;
+    identity?: Identity.ProviderType;
     viewModel: ViewModel.DisplayType;
 
     /**
@@ -68,10 +68,13 @@ export class Self extends Component<Props.Type,State.Self<any>> {
     let viewModel = this.viewModel;
     let error = viewModel.errorForState(this.state);
     let enabled = error.isSuccess();
-    let identity = Try.unwrap(props.identity.error);
+
+    let identity = Try.unwrap(props.identity)
+      .flatMap(v => Try.unwrap(v.error))
+      .getOrElse(() => Identity.createDefaultSelector());
     
-    return <div {...identity.map(v => v.containerIdentity(enabled)).value}>
-      <div {...identity.map(v => v.identity(enabled)).value}>
+    return <div {...identity.containerIdentity(enabled).value}>
+      <div {...identity.identity(enabled).value}>
         {this.createDisplayComponent(error)}
       </div>
     </div>;
