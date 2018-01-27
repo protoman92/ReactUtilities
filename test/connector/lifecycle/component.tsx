@@ -8,7 +8,7 @@ export namespace App {
     }
 
     public render(): JSX.Element {
-      return <div/>;
+      <div/>;
     }
   }
 }
