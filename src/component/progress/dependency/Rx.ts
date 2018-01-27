@@ -99,11 +99,11 @@ export namespace ViewModel {
       return this.baseVM.stateStream();
     }
 
-    public progressDisplayTrigger = (): Observer<boolean> => {
+    public progressDisplayTrigger = (): Observer<Nullable<ProgressItem>> => {
       return this.provider.action.progress.progressDisplayTrigger;
     }
 
-    public progressDisplayStream = (): Observable<ProgressItem> => {
+    public progressDisplayStream = (): Observable<Try<ProgressItem>> => {
       return this.baseVM.progressDisplayStream();
     }
 

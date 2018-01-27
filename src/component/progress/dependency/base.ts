@@ -39,8 +39,8 @@ export namespace ViewModel {
    * view models can implement.
    */
   export interface Type {
-    progressDisplayTrigger(): Observer<ProgressItem>;
-    progressDisplayStream(): Observable<ProgressItem>;
+    progressDisplayTrigger(): Observer<Nullable<ProgressItem>>;
+    progressDisplayStream(): Observable<Try<ProgressItem>>;
   }
 
   /**
@@ -99,15 +99,21 @@ export namespace ViewModel {
       return this.provider.store.stateStream().map(v => v.substateAtNode(path));
     }
 
-    public progressDisplayTrigger = (): Observer<boolean> => {
+    public progressDisplayTrigger = (): Observer<Nullable<ProgressItem>> => {
       throw new Error(`Must override this for ${this}`);
     }
 
-    public progressDisplayStream = (): Observable<boolean> => {
+    public progressDisplayStream = (): Observable<Try<ProgressItem>> => {
       let provider = this.provider;
       let store = provider.store;
       let path = provider.action.progress.fullProgressValuePath;
-      return store.booleanAtNode(path).mapNonNilOrElse(v => v, false);
+
+      return store.valueAtNode(path)
+        .map(v => v.filter(
+          v1 => Progress.isInstance(v1),
+          v => `${v} is not a progress item`,
+        ))
+        .map(v => v.map(v1 => v1 as ProgressItem));
     }
 
     public progressForState = (state: Nullable<Readonly<S.Self<any>>>): Try<ProgressItem> => {

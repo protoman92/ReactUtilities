@@ -137,11 +137,11 @@ export namespace ViewModel {
       return this.pgVM.stateStream();
     }
 
-    public progressDisplayTrigger = (): Observer<boolean> => {
+    public progressDisplayTrigger = (): Observer<Nullable<ProgressItem>> => {
       return this.pgVM.progressDisplayTrigger();
     }
 
-    public progressDisplayStream = (): Observable<ProgressItem> => {
+    public progressDisplayStream = (): Observable<Try<ProgressItem>> => {
       return this.pgVM.progressDisplayStream();
     }
 

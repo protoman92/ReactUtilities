@@ -4,7 +4,7 @@ import { Strings } from 'javascriptutilities/dist/src/string';
 import { ReduxStore } from 'reactiveredux-js';
 import { ErrorDisplay } from './../../../src/component';
 
-let timeout = 100;
+let timeout = 1000;
 
 describe('Error view model should be implemented correctly', () => {
   let constants: ErrorDisplay.Base.Constants.Type = { displayDuration: 0 };
@@ -12,7 +12,7 @@ describe('Error view model should be implemented correctly', () => {
   let testErrorViewModel = (viewModel: ErrorDisplay.Base.ViewModel.DisplayType, done: Function) => {
     /// Setup
     let waitTime = 0.1;
-    let times = 5;
+    let times = 100;
     
     let errors = Numbers.range(0, times)
       .map(() => new Error(Strings.randomString(10)));
