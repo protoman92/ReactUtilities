@@ -31,7 +31,13 @@
       "es2015.symbol",
       "es2015.symbol.wellknown",
       "esnext.asynciterable"
-    ]
+    ],
+
+    "types": [
+      "react",
+      "react-native",
+      "jest"
+    ],
   },
   "compileOnSave": true
 }

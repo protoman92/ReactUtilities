@@ -23,8 +23,10 @@
   "homepage": "https://github.com/protoman92/ReactUtilities-JS#readme",
   "dependencies": {
     "@types/react": "^16.0.35",
+    "@types/react-native": "^0.52.5",
     "@types/react-router": "^4.0.21",
     "react": "^16.2.0",
+    "react-native": "^0.52.2",
     "react-router": "^4.2.0",
     "reactiveredux-js": "^1.1.1"
   },
