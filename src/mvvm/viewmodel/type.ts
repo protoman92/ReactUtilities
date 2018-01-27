@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { Nullable, Try } from 'javascriptutilities';
-import { State } from 'typesafereduxstate-js';
+import { State } from 'type-safe-state-js';
 import * as Navigation from './../navigation';
 
 export interface Type {

@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable, Observer } from 'rxjs';
 import { Nullable } from 'javascriptutilities';
-import { ReduxStore } from 'reactiveredux-js';
+import { ReduxStore } from 'reactive-rx-redux-js';
 import { Scrap } from './component';
 
 export interface Action {

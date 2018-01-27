@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Nullable } from 'javascriptutilities';
-import { State } from 'typesafereduxstate-js';
-import { ReduxStore } from 'reactiveredux-js';
+import { State } from 'type-safe-state-js';
+import { ReduxStore } from 'reactive-rx-redux-js';
 import { Connector, MVVM } from './../../../src';
 
 export namespace App {

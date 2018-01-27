@@ -2,8 +2,8 @@ import { Subscription } from 'rxjs';
 import * as React from 'react';
 import { Component, ComponentClass, ComponentType, ClassType } from 'react';
 import { Nullable } from 'javascriptutilities';
-import { State } from 'typesafereduxstate-js';
-import { ReduxStore } from 'reactiveredux-js';
+import { State } from 'type-safe-state-js';
+import { ReduxStore } from 'reactive-rx-redux-js';
 import * as MVVM from './../mvvm';
 
 export type Selector<T> = (state: State.Self<T>) => State.Self<T>;

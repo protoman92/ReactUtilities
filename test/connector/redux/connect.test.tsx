@@ -3,7 +3,7 @@ import * as enzyme from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 import { ReactWrapper, HTMLAttributes } from 'enzyme';
 import { Numbers, Strings } from 'javascriptutilities';
-import { State } from 'typesafereduxstate-js';
+import { State } from 'type-safe-state-js';
 import { App, Scrap } from './component';
 import * as Dependency from './dependency';
 
