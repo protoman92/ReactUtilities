@@ -1,4 +1,4 @@
-import * as Dependency from './base';
+import * as Base from './base';
 import * as Dispatch from './Dispatch';
 import * as Rx from './Rx';
-export { Dependency, Dispatch, Rx };
+export { Base, Dispatch, Rx };

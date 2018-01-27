@@ -1,35 +1,51 @@
-import { ErrorDisplay } from './../../../src/component';
+import { Observable } from 'rxjs'; 
 import { Numbers } from 'javascriptutilities';
 import { Strings } from 'javascriptutilities/dist/src/string';
 import { ReduxStore } from 'reactiveredux-js';
+import { ErrorDisplay } from './../../../src/component';
+
+let timeout = 100;
 
 describe('Error view model should be implemented correctly', () => {
-  let constants: ErrorDisplay.Dependency.Constants.Type = { displayDuration: 0 };
+  let constants: ErrorDisplay.Base.Constants.Type = { displayDuration: 0 };
 
-  let testErrorViewModel = (viewModel: ErrorDisplay.Dependency.ViewModel.Type) => {
+  let testErrorViewModel = (viewModel: ErrorDisplay.Base.ViewModel.DisplayType, done: Function) => {
     /// Setup
-    let times = 1000;
+    let waitTime = 0.1;
+    let times = 5;
     
     let errors = Numbers.range(0, times)
       .map(() => new Error(Strings.randomString(10)));
 
+    var nullables: undefined[] = [];
     var errorResults: Error[] = [];
+    let trigger = viewModel.operationErrorTrigger();
 
     viewModel.operationErrorStream()
+      .doOnNext(v => v.value === undefined ? nullables.push(undefined) : {})
       .mapNonNilOrEmpty(v => v)
       .doOnNext(v => errorResults.push(v))
       .subscribe();
 
-    /// When
-    for (let error of errors) {
-      viewModel.operationErrorTrigger().next(error);
-    }
+    // Also need to test that the view model automatically deletes the error
+    // from global stream.
+    viewModel.initialize();
 
-    /// Then
-    expect(errorResults).toEqual(errors);
+    /// When
+    Observable.from(errors)
+      .flatMap((v, i) => Observable.of(v)
+        .delay(i * waitTime)
+        .doOnNext(v1 => trigger.next(v1)))
+      .toArray().delay(waitTime)
+      .doOnNext(() => {
+        expect(errorResults).toEqual(errors);
+        expect(nullables.length).toBe(times + 1);
+      })
+      .doOnCompleted(() => done())
+      .subscribe();
   };
 
-  it('Dispatch error view model should work correctly', () => {
+  it('Dispatch error view model should work correctly', done => {
     /// Setup
     let action = ErrorDisplay.Dispatch.Action.createDefault();
     let reducer = ErrorDisplay.Dispatch.Reducer.createDefault();
@@ -48,10 +64,10 @@ describe('Error view model should be implemented correctly', () => {
     store.initialize(reducer);
 
     /// Then
-    testErrorViewModel(viewModel);
-  });
+    testErrorViewModel(viewModel, done);
+  }, timeout);
 
-  it('Rx error view model should work correctly', () => {
+  it('Rx error view model should work correctly', done => {
     /// Setup
     let action = ErrorDisplay.Rx.Action.createDefault();
     let actionProvider: ErrorDisplay.Rx.Action.ProviderType = { error: action };
@@ -68,6 +84,6 @@ describe('Error view model should be implemented correctly', () => {
     let viewModel = new ErrorDisplay.Rx.ViewModel.Self(provider);
 
     /// When & Then
-    testErrorViewModel(viewModel);
-  });
+    testErrorViewModel(viewModel, done);
+  }, timeout);
 });
