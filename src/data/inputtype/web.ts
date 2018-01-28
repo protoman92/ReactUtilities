@@ -1,5 +1,5 @@
 /**
- * Represents all possible input types.
+ * Represents all possible input types for a web-based input component.
  */
 export enum Case {
   checkBox = 'checkbox',
