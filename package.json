@@ -1,6 +1,6 @@
 {
   "name": "react-base-utilities-js",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Utilities for React applications.",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -23,7 +23,6 @@
   "homepage": "https://github.com/protoman92/ReactUtilities-JS#readme",
   "dependencies": {
     "@types/react": "^16.0.35",
-    "@types/react-native": "^0.52.5",
     "@types/react-router": "^4.0.21",
     "react": "^16.2.0",
     "react-router": "^4.2.0",
