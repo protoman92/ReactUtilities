@@ -31,6 +31,6 @@ export function convertJSObject<T>(state: Nullable<JSObject<T>>): S.Self<T> {
   return state !== undefined && state !== null ? S.fromKeyValue(state) : S.empty<T>();
 }
 
-export function convertToJSObject<T>(state: S.Self<T>): JSObject<T> {
+export function convertToJSObject<T>(state: Nullable<S.Self<T>>): JSObject<T> {
   return state !== undefined && state !== null ? state.flatten() : {};
 }
