@@ -8,16 +8,16 @@ import { App, Scrap } from './component';
 import * as Dependency from './dependency';
 
 describe('Connect component with state - should work', () => {
-  var provider: Dependency.Provider;
-  var appProps: App.PropType;
-  var appViewModel: App.ViewModel;
-  var renderedApp: ReactWrapper<App.PropType,State.Self<any>>;
-  var renderedScrap: ReactWrapper<HTMLAttributes,State.Self<string>>;
+  let provider: Dependency.Provider;
+  let appProps: App.PropType;
+  let appViewModel: App.ViewModel;
+  let renderedApp: ReactWrapper<App.PropType, State.Self<any>>;
+  let renderedScrap: ReactWrapper<HTMLAttributes, State.Self<string>>;
 
   let getScrapText = (): string => {
     return renderedScrap.text();
   };
-  
+
   beforeEach(() => {
     enzyme.configure({ adapter: new Adapter() });
     provider = Dependency.createProvider();
@@ -40,7 +40,7 @@ describe('Connect component with state - should work', () => {
       /// Then
       expect(randomValue).toBe(componentValue);
     }
-    
+
     /// Then
     // Does not matter how many times Scrap is re-rendered, the main component
     // should only render once. This shows that the wrapping is done correctly.

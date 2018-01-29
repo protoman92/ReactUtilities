@@ -18,7 +18,7 @@ export namespace WrapperProps {
     viewModel: Readonly<WrapperViewModel.Type>;
 
     /**
-     * It does not matter what state is passed in, it will be replaced by a 
+     * It does not matter what state is passed in, it will be replaced by a
      * custom state by the wrapper component. This value is here to enforce
      * conformance for wrapped components' prop types.
      */
@@ -52,27 +52,27 @@ export namespace WrapperViewModel {
 /**
  * Wrap the outermost component with a custom component that listens to state
  * changes and updates children if necessary.
- * 
+ *
  * We actually do not need a wrapper just for Redux-related state handling.
  * Instead, we can use the state stream directly to listen to state changes.
- * 
+ *
  * @template P Props generics.
  * @template T Component generics.
  * @template C Component class generics.
- * @param {Selector<any>} [selector=(state: State.Self<any>) => state] Optional 
+ * @param {Selector<any>} [selector=(state: State.Self<any>) => state] Optional
  * state transform function. This allows us to select the specific substate to
  * mutate.
- * @returns {(fn: ClassType<P,T,C>) => ComponentType<P>} Function returning 
+ * @returns {(fn: ClassType<P, T, C>) => ComponentType<P>} Function returning
  * the wrapper.
  */
 export function connect<
   P extends WrapperProps.Type,
-  T extends Component<P,State.Self<any>>,
+  T extends Component<P, State.Self<any>>,
   C extends ComponentClass<P>> (
   selector: Selector<any> = (state: State.Self<any>) => state,
-): (fn: ClassType<P,T,C>) => ComponentType<P> {
-  return (fn: ClassType<P,T,C>): ComponentType<P> => {
-    return class Wrapper extends Component<P,State.Self<any>> {
+): (fn: ClassType<P, T, C>) => ComponentType<P> {
+  return (fn: ClassType<P, T, C>): ComponentType<P> => {
+    return class Wrapper extends Component<P, State.Self<any>> {
       private readonly viewModel: WrapperViewModel.Self;
       private readonly subscription: Subscription;
 
@@ -83,12 +83,12 @@ export function connect<
       }
 
       /**
-       * In this lifecycle method, we initialize the store subscription and 
+       * In this lifecycle method, we initialize the store subscription and
        * deliver states whenever the stream emits an item.
        */
       public componentWillMount() {
         let store = this.viewModel.provider.store;
-        
+
         store.stateStream()
           .map(v => selector(v))
           .doOnNext(v => this.setState(v))
@@ -107,7 +107,7 @@ export function connect<
         /// Wrapped components should define a state key in their prop type
         /// definitions, then access the state value to set their own states.
         let props = Object.assign({}, this.props, { wrappedState: this.state });
-        return React.createElement<P,T,C>(fn, props);
+        return React.createElement<P, T, C>(fn, props);
       }
     };
   };

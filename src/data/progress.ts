@@ -9,4 +9,4 @@ export interface Type {
 
 export let isInstance = (object: any): object is Type => {
   return Types.isInstance(object, 'description');
-}
+};

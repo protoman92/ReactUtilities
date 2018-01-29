@@ -11,7 +11,7 @@ export namespace ViewModel {
 
   /**
    * Use this view model to handle confirm events, such as when the user clicks
-   * a button to perform login. 
+   * a button to perform login.
    */
   export class Self implements Type, ViewModelType {
     private confirmSubject: Subject<void>;

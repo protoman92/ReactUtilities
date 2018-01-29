@@ -1,3 +1,4 @@
 import * as Common from './common';
+import * as TypeSafeStateConvertible from './TypeSafeStateConvertible';
 import * as Web from './web';
-export { Common, Web };
+export { Common, TypeSafeStateConvertible, Web };
