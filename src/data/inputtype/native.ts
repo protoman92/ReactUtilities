@@ -7,8 +7,8 @@ export namespace NativeCommon {
   export enum Case {
     DEFAULT = 'default',
     NUMERIC = 'numeric',
-    EMAIL = 'email_address',
-    PHONE = 'phone_pad',
+    EMAIL = 'email-address',
+    PHONE = 'phone-pad',
   }
 
   /**
@@ -30,7 +30,7 @@ export namespace Android {
    * Input types for Android RN components.
    */
   export enum Case {
-    VISIBLE_PASSWORD = 'visible_password',
+    VISIBLE_PASSWORD = 'visible-password',
   }
 
   /**
@@ -44,14 +44,14 @@ export namespace Android {
 
 export namespace iOS {
   export enum Case {
-    ASCII_CAPABLE = 'ascii_capable',
+    ASCII_CAPABLE = 'ascii-capable',
     NUMBERS_AND_PUNCTUATION = 'numbers-and-punctuation',
     URL = 'url',
-    NUMBER_PAD = 'number_pad',
-    NAME_PHONE_PAD = 'name_phone_pad',
-    DECIMAL_PAD = 'decimal_pad',
+    NUMBER_PAD = 'number-pad',
+    NAME_PHONE_PAD = 'name-phone-pad',
+    DECIMAL_PAD = 'decimal-pad',
     TWITTER = 'twitter',
-    WEB_SEARCH = 'web_search',
+    WEB_SEARCH = 'web-search',
   }
 
   /**
