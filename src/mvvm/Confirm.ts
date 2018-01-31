@@ -16,7 +16,7 @@ export namespace ViewModel {
   export class Self implements Type, ViewModelType {
     private confirmSubject: Subject<void>;
 
-    public get screen(): Readonly<Nullable<Navigation.Screen.Type>> {
+    public get screen(): Readonly<Nullable<Navigation.Screen.BaseType>> {
       return undefined;
     }
 

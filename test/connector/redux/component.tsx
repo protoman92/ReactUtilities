@@ -13,7 +13,7 @@ export namespace App {
     public provider: ReduxStore.Provider.Type;
     private _renderCount: number;
 
-    public get screen(): Readonly<Nullable<MVVM.Navigation.Screen.Type>> {
+    public get screen(): Readonly<Nullable<MVVM.Navigation.Screen.BaseType>> {
       return undefined;
     }
 
@@ -76,7 +76,7 @@ export namespace Scrap {
   export class ViewModel implements Connector.Redux.WrapperViewModel.Type {
     public provider: ReduxStore.Provider.Type;
 
-    public get screen(): Readonly<Nullable<MVVM.Navigation.Screen.Type>> {
+    public get screen(): Readonly<Nullable<MVVM.Navigation.Screen.BaseType>> {
       return undefined;
     }
 

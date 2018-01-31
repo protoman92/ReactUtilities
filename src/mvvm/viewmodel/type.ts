@@ -4,7 +4,7 @@ import { State } from 'type-safe-state-js';
 import * as Navigation from './../navigation';
 
 export interface Type {
-  screen: Readonly<Nullable<Navigation.Screen.Type>>;
+  screen: Readonly<Nullable<Navigation.Screen.BaseType>>;
   initialize(): void;
   deinitialize(): void;
 }

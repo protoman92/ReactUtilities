@@ -37,7 +37,7 @@ export namespace WrapperViewModel {
    */
   export class Self implements Type {
     public readonly provider: ReduxStore.Provider.Type;
-    public readonly screen: Nullable<MVVM.Navigation.Screen.Type>;
+    public readonly screen: Nullable<MVVM.Navigation.Screen.BaseType>;
 
     public constructor(viewModel: Type) {
       this.provider = viewModel.provider;

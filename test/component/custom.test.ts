@@ -11,7 +11,7 @@ describe('Custom component type should work correctly', () => {
     let currentState: any = undefined;
 
     let vm: MVVM.ViewModel.ReduxType = {
-      screen: { id: '', relativePath: '', },
+      screen: { id: '' },
       initialize: () => {},
       deinitialize: () => {},
       stateStream: (): Observable<Try<S.Self<any>>> => stateStream,

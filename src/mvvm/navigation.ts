@@ -17,13 +17,31 @@ export namespace Screen {
    * where the navigation came. This information could be useful for debugging
    * purposes.
    */
-  export interface Type {
+  export interface BaseType {
     id: string;
+  }
 
+  export namespace Native {
     /**
-     * Get the relative path with which we can push to this screen.
+     * Screen for native components.
+     * @extends {BaseType} Base type extension.
      */
-    relativePath: string;
+    export interface Type extends BaseType {}
+  }
+
+  export namespace Web {
+    /**
+     * Screen for web components. Usually we would use a router object provided
+     * by react-router to perform navigations, so we need to know the incoming
+     * screen's relative path.
+     * @extends {BaseType} Base type extension.
+     */
+    export interface Type extends BaseType {
+      /**
+       * Get the relative path with which we can push to this screen.
+       */
+      relativePath: string;
+    }
   }
 }
 
@@ -35,7 +53,7 @@ export namespace Info {
     /**
      * The previous screen that is navigating to the current screen.
      */
-    prevScreen: Nullable<Screen.Type>;
+    prevScreen: Nullable<Screen.BaseType>;
 
     /**
      * The navigation intent with which the navigation was carried out.
