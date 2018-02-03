@@ -38,7 +38,7 @@ export namespace App {
     }
   }
 
-  export class Component extends React.Component<PropType, State.Self<any>> {
+  export class Component extends React.Component<PropType, State.Type<any>> {
     private viewModel: ViewModel;
 
     public constructor(props: PropType) {
@@ -88,7 +88,7 @@ export namespace Scrap {
     public deinitialize = (): void => {};
   }
 
-  export class Component extends React.Component<PropType, State.Self<any>> {
+  export class Component extends React.Component<PropType, State.Type<any>> {
     public constructor(props: PropType) {
       super(props);
     }

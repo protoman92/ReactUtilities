@@ -7,7 +7,7 @@ export namespace Intent {
    * for debugging purposes.
    */
   export interface Type {
-    id: string;
+    readonly id: string;
   }
 }
 
@@ -18,7 +18,7 @@ export namespace Screen {
    * purposes.
    */
   export interface BaseType {
-    id: string;
+    readonly id: string;
   }
 
   export namespace Native {
@@ -40,7 +40,7 @@ export namespace Screen {
       /**
        * Get the relative path with which we can push to this screen.
        */
-      relativePath: string;
+      readonly relativePath: string;
     }
   }
 }
@@ -53,11 +53,11 @@ export namespace Info {
     /**
      * The previous screen that is navigating to the current screen.
      */
-    prevScreen: Nullable<Screen.BaseType>;
+    readonly prevScreen: Nullable<Screen.BaseType>;
 
     /**
      * The navigation intent with which the navigation was carried out.
      */
-    intent: Intent.Type;
+    readonly intent: Intent.Type;
   }
 }

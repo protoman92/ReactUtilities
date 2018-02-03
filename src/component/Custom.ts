@@ -9,12 +9,12 @@ import * as Platform from './Platform';
  * @template S State generics.
  */
 export interface Type<P, S> {
-  props: P;
+  readonly props: P;
 
   /**
    * Get the platform this component is built for.
    */
-  platform: Readonly<Platform.Case>;
+  readonly platform: Readonly<Platform.Case>;
   setState(state: S, callback?: () => void): void;
 }
 

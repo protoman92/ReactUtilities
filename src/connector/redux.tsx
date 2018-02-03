@@ -6,7 +6,7 @@ import { State } from 'type-safe-state-js';
 import { ReduxStore } from 'reactive-rx-redux-js';
 import * as MVVM from './../mvvm';
 
-export type Selector<T> = (state: State.Self<T>) => State.Self<T>;
+export type Selector<T> = (state: State.Type<T>) => State.Type<T>;
 
 export namespace WrapperProps {
   /**
@@ -15,14 +15,14 @@ export namespace WrapperProps {
    * method to work correctly.
    */
   export interface Type {
-    viewModel: Readonly<WrapperViewModel.Type>;
+    readonly viewModel: Readonly<WrapperViewModel.Type>;
 
     /**
      * It does not matter what state is passed in, it will be replaced by a
      * custom state by the wrapper component. This value is here to enforce
      * conformance for wrapped components' prop types.
      */
-    wrappedState: Readonly<State.Self<any>>;
+    readonly wrappedState: Readonly<State.Type<any>>;
   }
 }
 
@@ -59,7 +59,7 @@ export namespace WrapperViewModel {
  * @template P Props generics.
  * @template T Component generics.
  * @template C Component class generics.
- * @param {Selector<any>} [selector=(state: State.Self<any>) => state] Optional
+ * @param {Selector<any>} [selector=(state: State.Type<any>) => state] Optional
  * state transform function. This allows us to select the specific substate to
  * mutate.
  * @returns {(fn: ClassType<P, T, C>) => ComponentType<P>} Function returning
@@ -67,12 +67,12 @@ export namespace WrapperViewModel {
  */
 export function connect<
   P extends WrapperProps.Type,
-  T extends Component<P, State.Self<any>>,
+  T extends Component<P, State.Type<any>>,
   C extends ComponentClass<P>> (
-  selector: Selector<any> = (state: State.Self<any>) => state,
+  selector: Selector<any> = (state: State.Type<any>) => state,
 ): (fn: ClassType<P, T, C>) => ComponentType<P> {
   return (fn: ClassType<P, T, C>): ComponentType<P> => {
-    return class Wrapper extends Component<P, State.Self<any>> {
+    return class Wrapper extends Component<P, State.Type<any>> {
       private readonly viewModel: WrapperViewModel.Self;
       private readonly subscription: Subscription;
 

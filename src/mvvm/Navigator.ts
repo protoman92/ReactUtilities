@@ -14,7 +14,6 @@ import * as Navigation from './navigation';
  * On the other hand, in a native app, we need to pass more dependencies if
  * using react-navigation, because the navigation object has to pass the props
  * to the incoming component.
- *
  * @template Params Generics parameter.
  */
 export interface Type<Params> {

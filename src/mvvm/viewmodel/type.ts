@@ -4,7 +4,7 @@ import { State } from 'type-safe-state-js';
 import * as Navigation from './../navigation';
 
 export interface Type {
-  screen: Readonly<Nullable<Navigation.Screen.BaseType>>;
+  readonly screen: Readonly<Nullable<Navigation.Screen.BaseType>>;
   initialize(): void;
   deinitialize(): void;
 }
@@ -14,5 +14,5 @@ export interface Type {
  * @extends {Type} Type extension.
  */
 export interface ReduxType extends Type {
-  stateStream(): Observable<Try<State.Self<any>>>;
+  stateStream(): Observable<Try<State.Type<any>>>;
 }

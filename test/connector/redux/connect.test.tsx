@@ -11,8 +11,8 @@ describe('Connect component with state - should work', () => {
   let provider: Dependency.Provider;
   let appProps: App.PropType;
   let appViewModel: App.ViewModel;
-  let renderedApp: ReactWrapper<App.PropType, State.Self<any>>;
-  let renderedScrap: ReactWrapper<HTMLAttributes, State.Self<string>>;
+  let renderedApp: ReactWrapper<App.PropType, State.Type<any>>;
+  let renderedScrap: ReactWrapper<HTMLAttributes, State.Type<string>>;
 
   let getScrapText = (): string => {
     return renderedScrap.text();

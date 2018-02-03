@@ -4,9 +4,9 @@ import { Types } from 'javascriptutilities';
  * Represents a country code.
  */
 export interface Type {
-  name: string;
-  code: string;
-  callingCode: string;
+  readonly name: string;
+  readonly code: string;
+  readonly callingCode: string;
 }
 
 /**

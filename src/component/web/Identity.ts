@@ -8,11 +8,11 @@ export interface Type {
    * This will be translated to 'id'.
    * @type {Indeterminate<string>} Optional identity.
    */
-  id: Indeterminate<string>;
+  readonly id: Indeterminate<string>;
 
   /**
    * This will be translated to 'class'.
    * @type {Indeterminate<string>} Optional identity.
    */
-  className: Indeterminate<string>;
+  readonly className: Indeterminate<string>;
 }

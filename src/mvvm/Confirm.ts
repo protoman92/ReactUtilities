@@ -14,7 +14,7 @@ export namespace ViewModel {
    * a button to perform login.
    */
   export class Self implements Type, ViewModelType {
-    private confirmSubject: Subject<void>;
+    private readonly confirmSubject: Subject<void>;
 
     public get screen(): Readonly<Nullable<Navigation.Screen.BaseType>> {
       return undefined;

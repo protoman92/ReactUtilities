@@ -5,8 +5,8 @@ import { Indeterminate } from 'javascriptutilities';
  * set of input items.
  */
 export interface Header {
-  title: string;
-  confirmTitle: string;
+  readonly title: string;
+  readonly confirmTitle: string;
   allInputs(): Type[];
 }
 
@@ -14,6 +14,6 @@ export interface Header {
  * Represents an input item.
  */
 export interface Type {
-  id: string;
-  placeholder: Indeterminate<string>;
+  readonly id: string;
+  readonly placeholder: Indeterminate<string>;
 }
