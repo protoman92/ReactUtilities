@@ -1,13 +1,11 @@
-import { Observable } from 'rxjs';
-import { Indeterminate, Try } from 'javascriptutilities';
-import { State } from 'type-safe-state-js';
-import * as Navigation from './navigation';
+import { Subscription } from 'rxjs';
+import { StateType } from 'type-safe-state-js';
+import * as Model from './model';
 
 /**
  * Root view model type.
  */
 export interface RootType {
-  readonly screen: Indeterminate<Navigation.Screen.RootType>;
   initialize(): void;
   deinitialize(): void;
 }
@@ -17,5 +15,29 @@ export interface RootType {
  * @extends {RootType} Root type extension.
  */
 export interface ReduxType extends RootType {
-  stateStream(): Observable<Try<State.Type<any>>>;
+  /**
+   * Listen to state changes.
+   * @param {{ setState: (state: StateType<any>) => void }} view A minimal slice
+   * of React Components.
+   */
+  setUpStateChanges(view: { setState: (state: StateType<any>) => void }): void;
+}
+
+/**
+ * Set up state changes listener for a view.
+ * @param {{ setState: (state: StateType<any>) => void }} view A minimal slice
+ * of React Components.
+ * @param {Model.ReduxType} model A Redux-enabled model.
+ * @param {Subscription} subscription A Subscription instance.
+ */
+export function setUpStateChanges(
+  view: { setState: (state: StateType<any>) => void },
+  model: Model.ReduxType,
+  subscription: Subscription,
+) {
+  model.stateStream
+    .mapNonNilOrEmpty(v => v)
+    .distinctUntilChanged()
+    .subscribe(v => view.setState(v))
+    .toBeDisposedBy(subscription);
 }
