@@ -15,7 +15,7 @@ export type CElement<P> = ComponentElement<P, Component<P, {}>>;
  * @param {(ClassAttributes<T> & P)} props The props to be added.
  * @returns {CElement<Pick<RouteComponentProps<O>, never>>} A CElement instance.
  */
-export function retrofit<O, P, T extends Component<P & RouteComponentProps<O>, {}>>(
+export function injectRouter<O, P, T extends Component<P & RouteComponentProps<O>, {}>>(
   element: ComponentType<P & RouteComponentProps<{}>>,
   props: ClassAttributes<T> & P,
 ): CElement<Pick<RouteComponentProps<O>, never>> {

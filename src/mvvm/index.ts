@@ -1,5 +1,5 @@
+import * as Model from './model';
 import * as Navigation from './navigation';
-import * as Navigator from './Navigator';
+import * as Navigator from './navigator';
 import * as ViewModel from './viewmodel';
-import * as Confirm from './Confirm';
-export { Confirm, Navigation, Navigator, ViewModel };
+export { Model, Navigation, Navigator, ViewModel };

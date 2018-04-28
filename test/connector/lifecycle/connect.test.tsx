@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as enzyme from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 import { Connector } from './../../../src';
-import { Lifecycle } from './../../../src/component/common';
+import { Lifecycle } from './../../../src/component';
 import { Selector } from './../../../src/connector/lifecycle';
 import { App } from './component';
 
@@ -19,7 +19,7 @@ describe('Connect component lifecycle - should work', () => {
       lifecycles.push(lifecycle);
     };
 
-    let compClass = Connector.Lifecycle.connect(hook)(App.Self);
+    let compClass = Connector.Lifecycle.trackLifecycle(hook)(App.Self);
 
     /// When
     enzyme.mount(React.createElement(compClass)).unmount();

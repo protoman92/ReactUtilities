@@ -20,13 +20,13 @@ export interface Type<Params> {
   /**
    * Navigate to a screen that owns a particular view model.
    * @param {Params} params A Params instance.
-   * @param {Navigation.Info.Type} intent The navigation information.
+   * @param {Navigation.Info.Type} info The navigation information.
    */
   navigate(params: Params, info: Navigation.Info.Type): void;
 
   /**
    * Navigate back to the previous screen.
-   * @param {Navigation.Info.Type} info  The navigation information.
+   * @param {Navigation.Info.Type} info The navigation information.
    */
   back(info: Navigation.Info.Type): void;
 }

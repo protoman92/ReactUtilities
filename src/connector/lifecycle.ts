@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, ComponentClass, ClassType, ComponentType } from 'react';
-import { Lifecycle } from './../component/common';
+import { Lifecycle } from './../component';
 
 export type Selector = (id: string, lifecycle: Lifecycle.Case) => void;
 
@@ -15,7 +15,7 @@ export type Selector = (id: string, lifecycle: Lifecycle.Case) => void;
  * @returns {(fn: ClassType<P, T, C>) => ComponentType<P>} Function returning
  * the wrapper.
  */
-export function connect<
+export function trackLifecycle<
   P, S, T extends Component<P, S>, C extends ComponentClass<P>> (
   selector: Selector = (_e, _lifecycle) => console.log(`${_e}: ${_lifecycle}`),
 ): (fn: ClassType<P, T, C>) => ComponentType<P> {
