@@ -1,2 +1,2 @@
-import * as Identity from './Identity';
-export { Identity };
+import * as identity from './Identity';
+export { identity };

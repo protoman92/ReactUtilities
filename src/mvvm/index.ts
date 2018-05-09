@@ -1,5 +1,5 @@
-import * as Model from './model';
-import * as Navigation from './navigation';
-import * as Navigator from './navigator';
-import * as ViewModel from './viewmodel';
-export { Model, Navigation, Navigator, ViewModel };
+import * as model from './model';
+import * as navigation from './navigation';
+import * as navigator from './navigator';
+import * as viewmodel from './viewmodel';
+export { model, navigation, navigator, viewmodel };

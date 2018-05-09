@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as enzyme from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
-import { Connector } from './../../../src';
-import { Lifecycle } from './../../../src/component';
+import { connector } from './../../../src';
+import { lifecycle } from './../../../src/component';
 import { Selector } from './../../../src/connector/lifecycle';
-import { App } from './component';
+import { app } from './component';
 
 describe('Connect component lifecycle - should work', () => {
   beforeEach(() => {
@@ -13,22 +13,22 @@ describe('Connect component lifecycle - should work', () => {
 
   it('Connect component lifestyle - should work', () => {
     /// Setup
-    let lifecycles: Lifecycle.Case[] = [];
+    let lifecycles: lifecycle.Case[] = [];
 
-    let hook: Selector = (_id: string, lifecycle: Lifecycle.Case) => {
-      lifecycles.push(lifecycle);
+    let hook: Selector = (_id: string, lc: lifecycle.Case) => {
+      lifecycles.push(lc);
     };
 
-    let compClass = Connector.Lifecycle.trackLifecycle(hook)(App.Self);
+    let compClass = connector.lifecycle.trackLifecycle(hook)(app.Self);
 
     /// When
     enzyme.mount(React.createElement(compClass)).unmount();
 
     /// Then
     expect(lifecycles).toEqual([
-      Lifecycle.Case.componentWillMount,
-      Lifecycle.Case.componentDidMount,
-      Lifecycle.Case.componentWillUnmount,
+      lifecycle.Case.componentWillMount,
+      lifecycle.Case.componentDidMount,
+      lifecycle.Case.componentWillUnmount,
     ]);
   });
 });

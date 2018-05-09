@@ -1,4 +1,4 @@
-import * as Navigation from './navigation';
+import * as navigation from './navigation';
 
 /**
  * We should have a dedicated navigator that view models have access to, in
@@ -20,13 +20,13 @@ export interface Type<Params> {
   /**
    * Navigate to a screen that owns a particular view model.
    * @param {Params} params A Params instance.
-   * @param {Navigation.Info.Type} info The navigation information.
+   * @param {navigation.info.Type} info The navigation information.
    */
-  navigate(params: Params, info: Navigation.Info.Type): void;
+  navigate(params: Params, info: navigation.info.Type): void;
 
   /**
    * Navigate back to the previous screen.
-   * @param {Navigation.Info.Type} info The navigation information.
+   * @param {navigation.info.Type} info The navigation information.
    */
-  back(info: Navigation.Info.Type): void;
+  back(info: navigation.info.Type): void;
 }

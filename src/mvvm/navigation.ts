@@ -1,6 +1,6 @@
 import { Indeterminate } from 'javascriptutilities';
 
-export namespace Intent {
+export namespace intent {
   /**
    * Pass the navigation intent to each navigation calls to distinguish the
    * app's intents when it navigates to a screen. This is especially helpful for
@@ -11,7 +11,7 @@ export namespace Intent {
   }
 }
 
-export namespace Screen {
+export namespace screen {
   /**
    * Pass the screen information to the next view model so that it knows from
    * where the navigation came. This information could be useful for debugging
@@ -21,15 +21,15 @@ export namespace Screen {
     readonly id: string;
   }
 
-  export namespace Native {
+  export namespace native {
     /**
      * Screen for native components.
      * @extends {RootType} Root type extension.
      */
-    export interface Type extends RootType {}
+    export interface Type extends RootType { }
   }
 
-  export namespace Web {
+  export namespace web {
     /**
      * Screen for web components. Usually we would use a router object provided
      * by react-router to perform navigations, so we need to know the incoming
@@ -45,7 +45,7 @@ export namespace Screen {
   }
 }
 
-export namespace Info {
+export namespace info {
   /**
    * Provide all relevant navigation information for debugging.
    */
@@ -53,11 +53,11 @@ export namespace Info {
     /**
      * The previous screen that is navigating to the current screen.
      */
-    readonly previousScreen: Indeterminate<Screen.RootType>;
+    readonly previousScreen: Indeterminate<screen.RootType>;
 
     /**
      * The navigation intent with which the navigation was carried out.
      */
-    readonly intent: Intent.Type;
+    readonly intent: intent.Type;
   }
 }

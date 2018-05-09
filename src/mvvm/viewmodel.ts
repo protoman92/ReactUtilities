@@ -1,4 +1,6 @@
 import { Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { mapNonNilOrEmpty } from 'rx-utilities-js';
 import { StateType } from 'type-safe-state-js';
 import * as Model from './model';
 
@@ -35,9 +37,11 @@ export function setUpStateChanges(
   model: Model.ReduxType,
   subscription: Subscription,
 ) {
-  model.stateStream
-    .mapNonNilOrEmpty(v => v)
-    .distinctUntilChanged()
-    .subscribe(v => view.setState(v))
-    .toBeDisposedBy(subscription);
+  let disposable = model.stateStream
+    .pipe(
+      mapNonNilOrEmpty(v => v),
+      distinctUntilChanged())
+    .subscribe(v => view.setState(v));
+
+  subscription.add(disposable);
 }

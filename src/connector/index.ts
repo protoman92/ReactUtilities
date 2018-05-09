@@ -1,3 +1,3 @@
-import * as Lifecycle from './lifecycle';
-import * as Router from './router';
-export { Lifecycle, Router };
+import * as lifecycle from './lifecycle';
+import * as router from './router';
+export { lifecycle, router };

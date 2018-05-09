@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component, ComponentClass, ClassType, ComponentType } from 'react';
-import { Lifecycle } from './../component';
+import { lifecycle } from './../component';
 
-export type Selector = (id: string, lifecycle: Lifecycle.Case) => void;
+export type Selector = (id: string, lifecycle: lifecycle.Case) => void;
 
 /**
  * Wrap the outermost component with a custom component that listens to lifecycle
@@ -16,8 +16,8 @@ export type Selector = (id: string, lifecycle: Lifecycle.Case) => void;
  * the wrapper.
  */
 export function trackLifecycle<
-  P, S, T extends Component<P, S>, C extends ComponentClass<P>> (
-  selector: Selector = (_e, _lifecycle) => console.log(`${_e}: ${_lifecycle}`),
+  P, S, T extends Component<P, S>, C extends ComponentClass<P>>(
+    selector: Selector = (_e, _lifecycle) => console.log(`${_e}: ${_lifecycle}`),
 ): (fn: ClassType<P, T, C>) => ComponentType<P> {
   return (fn: ClassType<P, T, C>): ComponentType<P> => {
     return class Wrapper extends Component<P, S> {
@@ -30,15 +30,15 @@ export function trackLifecycle<
       }
 
       public componentWillMount() {
-        selector(this.elementName, Lifecycle.Case.componentWillMount);
+        selector(this.elementName, lifecycle.Case.componentWillMount);
       }
 
       public componentDidMount() {
-        selector(this.elementName, Lifecycle.Case.componentDidMount);
+        selector(this.elementName, lifecycle.Case.componentDidMount);
       }
 
       public componentWillUnmount() {
-        selector(this.elementName, Lifecycle.Case.componentWillUnmount);
+        selector(this.elementName, lifecycle.Case.componentWillUnmount);
       }
 
       public render(): JSX.Element {

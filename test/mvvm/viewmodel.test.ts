@@ -1,7 +1,7 @@
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Try, Numbers } from 'javascriptutilities';
 import { StateType } from 'type-safe-state-js';
-import { MVVM } from './../../src';
+import { mvvm } from './../../src';
 
 describe(`View model utilities should be implemented correctly`, () => {
   let iterations = 1000;
@@ -19,11 +19,11 @@ describe(`View model utilities should be implemented correctly`, () => {
       },
     };
 
-    let model: MVVM.Model.ReduxType = {
+    let model: mvvm.model.ReduxType = {
       stateStream: stateSb.asObservable(),
     };
 
-    MVVM.ViewModel.setUpStateChanges(view, model, subscription);
+    mvvm.viewmodel.setUpStateChanges(view, model, subscription);
 
     /// When && Then
     Numbers.range(0, iterations).forEach(v => {
