@@ -13,17 +13,15 @@ describe(`View model utilities should be implemented correctly`, () => {
     let stateSb = new BehaviorSubject(Try.success(currentState));
     let subscription = new Subscription();
 
-    let view = {
-      setState: (state: StateType<any>): void => {
-        currentState = state;
-      },
+    let callback = (state: StateType<any>): void => {
+      currentState = state;
     };
 
     let model: mvvm.model.ReduxType = {
       stateStream: stateSb.asObservable(),
     };
 
-    mvvm.viewmodel.setUpStateChanges(view, model, subscription);
+    mvvm.viewmodel.setUpStateCallback(callback, model, subscription);
 
     /// When && Then
     Numbers.range(0, iterations).forEach(v => {

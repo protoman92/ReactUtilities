@@ -19,29 +19,23 @@ export interface RootType {
 export interface ReduxType extends RootType {
   /**
    * Listen to state changes.
-   * @param {{ setState: (state: StateType<any>) => void }} view A minimal slice
-   * of React Components.
+   * @param {(state: StateType<any>) => void} callback A state callback.
    */
-  setUpStateChanges(view: { setState: (state: StateType<any>) => void }): void;
+  setUpStateCallback(callback: (state: StateType<any>) => void): void;
 }
 
 /**
- * Set up state changes listener for a view.
- * @param {{ setState: (state: StateType<any>) => void }} view A minimal slice
- * of React Components.
+ * Set up state callback.
+ * @param {(state: StateType<any>) => void} callback A state callback.
  * @param {Model.ReduxType} model A Redux-enabled model.
  * @param {Subscription} subscription A Subscription instance.
  */
-export function setUpStateChanges(
-  view: { setState: (state: StateType<any>) => void },
+export function setUpStateCallback(
+  callback: (state: StateType<any>) => void,
   model: Model.ReduxType,
   subscription: Subscription,
 ) {
-  let disposable = model.stateStream
-    .pipe(
-      mapNonNilOrEmpty(v => v),
-      distinctUntilChanged())
-    .subscribe(v => view.setState(v));
-
-  subscription.add(disposable);
+  subscription.add(model.stateStream
+    .pipe(mapNonNilOrEmpty(v => v), distinctUntilChanged())
+    .subscribe(v => callback(v)));
 }
