@@ -1,6 +1,6 @@
 {
   "name": "react-base-utilities-js",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Utilities for React applications.",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -22,17 +22,15 @@
   },
   "homepage": "https://github.com/protoman92/react-base-utilities-js#readme",
   "dependencies": {
-    "@types/react": "^16.0.35",
-    "@types/react-router": "^4.0.21",
     "react": "^16.2.0",
-    "react-router": "^4.2.0",
-    "rx-utilities-js": "^1.0.1",
-    "type-safe-state-js": "^1.2.0"
+    "react-router": "^4.2.0"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.8",
     "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/jest": "^21.1.6",
+    "@types/react": "^16.0.35",
+    "@types/react-router": "^4.0.21",
     "coveralls": "^3.0.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",

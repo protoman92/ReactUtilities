@@ -1,5 +1,3 @@
-import { Indeterminate } from 'javascriptutilities';
-
 export namespace intent {
   /**
    * Pass the navigation intent to each navigation calls to distinguish the
@@ -53,7 +51,7 @@ export namespace info {
     /**
      * The previous screen that is navigating to the current screen.
      */
-    readonly previousScreen: Indeterminate<screen.RootType>;
+    readonly previousScreen: screen.RootType | undefined;
 
     /**
      * The navigation intent with which the navigation was carried out.
