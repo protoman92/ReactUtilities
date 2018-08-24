@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "allowUnreachableCode": false,
     "alwaysStrict": true,
     "declaration": true,
     "jsx": "react",
     "module": "commonjs",
     "noUnusedLocals": true,
-    "noUnusedParameters": true, 
+    "noUnusedParameters": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -16,7 +16,6 @@
     "target": "es5",
     "sourceMap": true,
     "strictNullChecks": true,
-
     "lib": [
       "es5",
       "es6",
@@ -32,8 +31,11 @@
       "es2015.symbol.wellknown",
       "esnext.asynciterable"
     ],
-
-    "types": ["react", "jest"],
+    "types": [
+      "react",
+      "jest"
+    ],
+    "baseUrl": "src",
   },
   "compileOnSave": true
 }
