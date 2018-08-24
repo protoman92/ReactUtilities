@@ -128,10 +128,32 @@ describe('View model HOC should work correctly', () => {
     expect(ViewModel.instance).toEqual(0);
   });
 
-  it('Filtering duplicate props - should ensure non-duplicate props', () => {
+  it('Filtering duplicate props with equal func - should ensure non-duplicate props', () => {
     /// Setup
     HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
       checkEqualProps: deepEqual,
+      createViewModel: props => (props.viewModelFactory as any)(),
+    });
+
+    component = <HOCTestComponent index={-1}
+      viewModelFactory={() => instance(viewModel)} />;
+
+    let times = 1000;
+    let mounted = mount(component);
+
+    /// When
+    Numbers.range(0, times).forEach(index => {
+      mounted.setProps({ index });
+    });
+
+    /// Then
+    verify(viewModel.transformState(anything())).times(times + 1);
+  });
+
+  it('Filtering duplicate props with prop keys - should ensure non-duplicate props', () => {
+    /// Setup
+    HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
+      checkEqualProps: ['index'],
       createViewModel: props => (props.viewModelFactory as any)(),
     });
 
