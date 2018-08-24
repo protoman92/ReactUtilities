@@ -19,8 +19,17 @@ describe('View model HOC should work correctly', () => {
     return `${a}-${b}`;
   }
 
-  interface ViewModel extends ReduxViewModel<State> {
-    transformState(state: State): string;
+  class ViewModel implements ReduxViewModel<State> {
+    public static instance: number;
+
+    public constructor() {
+      ViewModel.instance += 1;
+    }
+
+    public initialize() { }
+    public deinitialize() { }
+    public setUpStateCallback(_callback: (state: State) => void) { }
+    public transformState(_state: State): string { return ''; }
   }
 
   interface Props {
@@ -49,14 +58,9 @@ describe('View model HOC should work correctly', () => {
   let viewModel: ViewModel;
 
   beforeEach(() => {
-    componentIndex = 0;
-
-    viewModel = spy({
-      initialize: () => { },
-      deinitialize: () => { },
-      setUpStateCallback: () => { },
-      transformState: () => '',
-    });
+    ViewModel.instance = -1;
+    componentIndex = 1000;
+    viewModel = spy(new ViewModel());
 
     component = <HOCTestComponent
       index={componentIndex}
@@ -107,5 +111,6 @@ describe('View model HOC should work correctly', () => {
     });
 
     verify(viewModel.transformState(anything())).times(times + 1);
+    expect(ViewModel.instance).toEqual(0);
   });
 });
