@@ -1,1 +1,1 @@
-export { ReduxViewModel, RootViewModel } from './mvvm';
+export { ReduxViewModel, RootViewModel, withViewModel } from './mvvm';
