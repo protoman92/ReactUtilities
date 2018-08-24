@@ -1,10 +1,10 @@
 import { mount, shallow } from 'enzyme';
 import { Numbers } from 'javascriptutilities';
-import { ReduxViewModel, withViewModel } from 'mvvm';
 import * as React from 'react';
 import { Component, ReactElement } from 'react';
 import { Subject } from 'rxjs';
 import { anything, instance, spy, verify, when } from 'ts-mockito-2';
+import { ReduxViewModel, withViewModel } from '../src';
 
 describe('View model HOC should work correctly', () => {
   let indexDivClass = 'index-div';
