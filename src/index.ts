@@ -1,3 +1,1 @@
-import * as connector from './connector';
-import * as mvvm from './mvvm';
-export { connector, mvvm };
+export { ReduxViewModel, RootViewModel } from './mvvm';
