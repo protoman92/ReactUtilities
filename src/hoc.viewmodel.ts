@@ -6,7 +6,7 @@ export type ViewModelHOCProps<VM> = { readonly viewModel: VM; };
 export type ViewModelFactoryHOCProps = { readonly viewModelFactory: unknown; };
 
 export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
-  readonly checkEqualProps?: (p1: Props, p2: Omit<Props, 'viewModel'>) => boolean;
+  readonly checkEqualProps?: (p1: Omit<Props, 'viewModel'>, p2: Omit<Props, 'viewModel'>) => boolean;
   readonly createViewModel: (props: Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps) => VM;
 };
 
