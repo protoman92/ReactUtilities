@@ -51,6 +51,7 @@ describe('View model HOC should work correctly', () => {
 
   // tslint:disable-next-line:variable-name
   let HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
+    hooks: { beforeViewModelCreated: () => { } },
     filterPropDuplicates: true,
     checkEquality: deepEqual,
     createViewModel: props => (props.viewModelFactory as any)(),

@@ -6,6 +6,12 @@ export type ViewModelHOCProps<VM> = { readonly viewModel: VM; };
 export type ViewModelFactoryHOCProps = { readonly viewModelFactory: unknown; };
 
 export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
+  readonly hooks?: {
+    /**
+     * Take this opportunity to load dependency extensions, for example.
+     */
+    readonly beforeViewModelCreated: () => void;
+  };
   readonly filterPropDuplicates: boolean;
   readonly propKeysForComparison?: (keyof Omit<Props, 'viewModel'>)[];
   readonly checkEquality?: (obj1: unknown, obj2: unknown) => boolean;
@@ -44,6 +50,11 @@ export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
 
     public constructor(props: WrapperProps) {
       super(props);
+
+      if (options.hooks && options.hooks.beforeViewModelCreated) {
+        options.hooks.beforeViewModelCreated();
+      }
+
       this.viewModel = options.createViewModel(props);
       let equalityFunction = options.checkEquality || ((o1, o2) => o1 === o2);
 
