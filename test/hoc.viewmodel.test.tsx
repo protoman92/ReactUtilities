@@ -5,6 +5,7 @@ import { Component, ReactElement } from 'react';
 import { Subject } from 'rxjs';
 import { anything, instance, spy, verify, when } from 'ts-mockito-2';
 import { ReduxViewModel, withViewModel } from '../src';
+let deepEqual = require('deep-equal');
 
 describe('View model HOC should work correctly', () => {
   let indexDivClass = 'index-div';
@@ -112,5 +113,27 @@ describe('View model HOC should work correctly', () => {
 
     verify(viewModel.transformState(anything())).times(times + 1);
     expect(ViewModel.instance).toEqual(0);
+  });
+
+  it('Filtering duplicate props - should ensure non-duplicate props', () => {
+    /// Setup
+    HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
+      checkEqualProps: deepEqual,
+      createViewModel: props => (props.viewModelFactory as any)(),
+    });
+
+    component = <HOCTestComponent index={-1}
+      viewModelFactory={() => instance(viewModel)} />;
+
+    let times = 10000;
+    let mounted = mount(component);
+
+    /// When
+    Numbers.range(0, times).forEach(index => {
+      mounted.setProps({ index });
+    });
+
+    /// Then
+    verify(viewModel.transformState(anything())).times(times + 1);
   });
 });

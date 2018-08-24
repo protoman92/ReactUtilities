@@ -32,6 +32,7 @@
       "esnext.asynciterable"
     ],
     "types": [
+      "node",
       "react",
       "jest"
     ],

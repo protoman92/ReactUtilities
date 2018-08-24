@@ -2,8 +2,8 @@ import { Objects, Omit, Types } from 'javascriptutilities';
 import * as React from 'react';
 import { Component, ComponentClass } from 'react';
 import { ReduxType, RootType } from './viewmodel';
-type ViewModelProps<VM> = { readonly viewModel: VM; };
-type FactoryProps = { readonly viewModelFactory: unknown; };
+interface ViewModelProps<VM> { readonly viewModel: VM; }
+interface FactoryProps { readonly viewModelFactory: unknown; }
 
 /**
  * This HOC method takes away most of the boilerplate for setting up a component
@@ -14,19 +14,22 @@ type FactoryProps = { readonly viewModelFactory: unknown; };
  * @param {(ComponentClass<Props & State, never>)} targetComponent The pure
  * component class that will have its view model injected. Notice that we do
  * not accept any state here; state will be injected as props.
- * @param {{
- *     readonly createViewModel: (options: WrapperProps<VM, Props>) => VM;
- *   }} options Set up options.
+ * @param {({
+ *     readonly checkEqualProps?: (p1: Omit<Props, 'viewModel'>, p2: Omit<Props, 'viewModel'>) => boolean;
+ *     readonly createViewModel: (props: Omit<Props, 'viewModel'> & FactoryProps) => VM;
+ *   })} options Set up options.
  * @returns {ComponentClass<Omit<Props, 'viewModel'> & FactoryProps, State>}
  * Wrapped component class that accepts a view model factory.
  */
 export function withViewModel<VM, Props extends ViewModelProps<VM>, State>(
   targetComponent: ComponentClass<Props & State, never>,
   options: {
+    readonly checkEqualProps?: (p1: Omit<Props, 'viewModel'>, p2: Omit<Props, 'viewModel'>) => boolean;
     readonly createViewModel: (props: Omit<Props, 'viewModel'> & FactoryProps) => VM;
   },
 ): ComponentClass<Omit<Props, 'viewModel'> & FactoryProps, State> {
-  type WrapperProps = Omit<Props, 'viewModel'> & FactoryProps;
+  type PureProps = Omit<Props, 'viewModel'>;
+  type WrapperProps = PureProps & FactoryProps;
 
   return class Wrapped extends Component<WrapperProps, State> {
     private readonly viewModel: VM;
@@ -51,6 +54,16 @@ export function withViewModel<VM, Props extends ViewModelProps<VM>, State>(
     public componentWillUnmount() {
       if (Types.isInstance<RootType>(this.viewModel, 'deinitialize')) {
         this.viewModel.deinitialize();
+      }
+    }
+
+    public shouldComponentUpdate(nextProps: WrapperProps) {
+      if (options.checkEqualProps) {
+        let currentProps = Objects.deleteKeys(this.props, 'children', 'viewModelFactory');
+        let nextProps2 = Objects.deleteKeys(nextProps, 'viewModelFactory');
+        return !options.checkEqualProps(currentProps as any, nextProps2 as any);
+      } else {
+        return true;
       }
     }
 
