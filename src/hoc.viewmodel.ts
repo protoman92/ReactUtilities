@@ -1,4 +1,4 @@
-import { Objects, Omit, Types } from 'javascriptutilities';
+import { Objects, Omit, Types, NullableKV } from 'javascriptutilities';
 import * as React from 'react';
 import { Component, ComponentClass } from 'react';
 import { ReduxType, RootType } from './viewmodel';
@@ -11,9 +11,9 @@ interface FactoryProps { readonly viewModelFactory: unknown; }
  * @template VM View model generics.
  * @template Props Props generics.
  * @template State State generics.
- * @param {(ComponentClass<Props & State, never>)} targetComponent The pure
- * component class that will have its view model injected. Notice that we do
- * not accept any state here; state will be injected as props.
+ * @param {(ComponentClass<Props & NullableKV<State>, never>)} targetComponent
+ * The pure component class that will have its view model injected. Notice that
+ * we do not accept any state here; state will be injected as props.
  * @param {({
  *     readonly checkEqualProps?: (p1: Omit<Props, 'viewModel'>, p2: Omit<Props, 'viewModel'>) => boolean;
  *     readonly createViewModel: (props: Omit<Props, 'viewModel'> & FactoryProps) => VM;
@@ -22,7 +22,7 @@ interface FactoryProps { readonly viewModelFactory: unknown; }
  * Wrapped component class that accepts a view model factory.
  */
 export function withViewModel<VM, Props extends ViewModelProps<VM>, State>(
-  targetComponent: ComponentClass<Props & State, never>,
+  targetComponent: ComponentClass<Props & NullableKV<State>, never>,
   options: {
     readonly checkEqualProps?: (p1: Omit<Props, 'viewModel'>, p2: Omit<Props, 'viewModel'>) => boolean;
     readonly createViewModel: (props: Omit<Props, 'viewModel'> & FactoryProps) => VM;

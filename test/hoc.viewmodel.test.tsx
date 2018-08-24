@@ -1,5 +1,5 @@
 import { mount, shallow } from 'enzyme';
-import { Numbers } from 'javascriptutilities';
+import { Numbers, NullableKV } from 'javascriptutilities';
 import * as React from 'react';
 import { Component, ReactElement } from 'react';
 import { Subject } from 'rxjs';
@@ -12,11 +12,11 @@ describe('View model HOC should work correctly', () => {
   let stateDivClass = 'state-div';
 
   interface State {
-    readonly a?: number;
-    readonly b?: number;
+    readonly a: number;
+    readonly b: number;
   }
 
-  function transformState({ a, b }: State) {
+  function transformState({ a, b }: NullableKV<State>) {
     return `${a}-${b}`;
   }
 
@@ -30,7 +30,7 @@ describe('View model HOC should work correctly', () => {
     public initialize() { }
     public deinitialize() { }
     public setUpStateCallback(_callback: (state: State) => void) { }
-    public transformState(_state: State): string { return ''; }
+    public transformState(_state: NullableKV<State>): string { return ''; }
   }
 
   interface Props {
@@ -38,7 +38,7 @@ describe('View model HOC should work correctly', () => {
     readonly viewModel: ViewModel;
   }
 
-  class TestComponent extends Component<Props & State, never> {
+  class TestComponent extends Component<Props & NullableKV<State>, never> {
     public render() {
       return <div>
         <div className={indexDivClass}>{this.props.index}</div>
