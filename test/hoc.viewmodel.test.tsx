@@ -1,5 +1,5 @@
 import { mount, shallow } from 'enzyme';
-import { Numbers, NullableKV } from 'javascriptutilities';
+import { NullableKV, Numbers } from 'javascriptutilities';
 import * as React from 'react';
 import { Component, ReactElement } from 'react';
 import { Subject } from 'rxjs';
@@ -51,6 +51,8 @@ describe('View model HOC should work correctly', () => {
 
   // tslint:disable-next-line:variable-name
   let HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
+    filterPropDuplicates: true,
+    checkEquality: deepEqual,
     createViewModel: props => (props.viewModelFactory as any)(),
   });
 
@@ -94,13 +96,13 @@ describe('View model HOC should work correctly', () => {
 
     let mounted = mount(component);
 
-    let newState: State = {
-      a: Numbers.randomBetween(0, 1000),
-      b: Numbers.randomBetween(0, 1000),
-    };
-
     Numbers.range(0, times).forEach(() => {
       /// When
+      let newState: State = {
+        a: Numbers.randomBetween(0, 1000),
+        b: Numbers.randomBetween(0, 1000),
+      };
+
       stateSb.next(newState);
       mounted.update();
 
@@ -128,10 +130,12 @@ describe('View model HOC should work correctly', () => {
     expect(ViewModel.instance).toEqual(0);
   });
 
-  it('Filtering duplicate props with equal func - should ensure non-duplicate props', () => {
+  it('Filtering duplicate props with defined keys - should ensure non-duplicate props', () => {
     /// Setup
     HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
-      checkEqualProps: deepEqual,
+      filterPropDuplicates: true,
+      checkEquality: deepEqual,
+      propKeysForComparison: ['index'],
       createViewModel: props => (props.viewModelFactory as any)(),
     });
 
@@ -150,10 +154,11 @@ describe('View model HOC should work correctly', () => {
     verify(viewModel.transformState(anything())).times(times + 1);
   });
 
-  it('Filtering duplicate props with prop keys - should ensure non-duplicate props', () => {
+  it('Filtering duplicate props without prop keys - should use all keys', () => {
     /// Setup
     HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
-      checkEqualProps: ['index'],
+      filterPropDuplicates: true,
+      checkEquality: deepEqual,
       createViewModel: props => (props.viewModelFactory as any)(),
     });
 

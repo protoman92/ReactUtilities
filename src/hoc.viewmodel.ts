@@ -1,4 +1,4 @@
-import { Objects, Omit, Types, NullableKV } from 'javascriptutilities';
+import { Nullable, NullableKV, Objects, Omit, Types } from 'javascriptutilities';
 import * as React from 'react';
 import { Component, ComponentClass, ReactNode } from 'react';
 import { ReduxType, RootType } from './viewmodel';
@@ -6,9 +6,9 @@ export type ViewModelHOCProps<VM> = { readonly viewModel: VM; };
 export type ViewModelFactoryHOCProps = { readonly viewModelFactory: unknown; };
 
 export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
-  readonly checkEqualProps?:
-  ((p1: Omit<Props, 'viewModel'>, p2: Omit<Props, 'viewModel'>) => boolean) |
-  (keyof Omit<Props, 'viewModel'>)[];
+  readonly filterPropDuplicates: boolean;
+  readonly propKeysForComparison?: (keyof Omit<Props, 'viewModel'>)[];
+  readonly checkEquality?: (obj1: unknown, obj2: unknown) => boolean;
   readonly createViewModel: (props: Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps) => VM;
 };
 
@@ -32,35 +32,39 @@ export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
   type PureProps = Omit<Props, 'viewModel'>;
   type WrapperProps = PureProps & ViewModelFactoryHOCProps;
   type StoredWrapperProps = Readonly<WrapperProps> & Readonly<{ children?: ReactNode }>;
-  type PropsEqualFunc = (p1: Readonly<PureProps>, p2: Readonly<PureProps>) => boolean;
 
   return class Wrapped extends Component<WrapperProps, State> {
     private readonly viewModel: VM;
-    private readonly shouldUpdate: (p1: StoredWrapperProps, p2: WrapperProps) => boolean;
+    private readonly shouldUpdate: (
+      currentProps: StoredWrapperProps,
+      nextProps: WrapperProps,
+      currentState: Nullable<State>,
+      nextState: Nullable<State>,
+    ) => boolean;
 
     public constructor(props: WrapperProps) {
       super(props);
       this.viewModel = options.createViewModel(props);
+      let equalityFunction = options.checkEquality || ((o1, o2) => o1 === o2);
 
-      if (options.checkEqualProps instanceof Function) {
-        let checkEqual: PropsEqualFunc = options.checkEqualProps;
+      if (options.filterPropDuplicates) {
+        let keys: (keyof PureProps)[];
 
-        this.shouldUpdate = (p1, p2) => {
-          let currentProps = Objects.deleteKeys(p1, 'children', 'viewModelFactory');
-          let nextProps2 = Objects.deleteKeys(p2, 'viewModelFactory');
-          return !checkEqual(currentProps as any, nextProps2 as any);
-        };
-      } else if (options.checkEqualProps instanceof Array) {
-        let keys: (keyof PureProps)[] = options.checkEqualProps;
+        if (options.propKeysForComparison instanceof Array) {
+          keys = options.propKeysForComparison;
+        } else {
+          let pureProps = Objects.deleteKeys(props, 'viewModelFactory');
+          keys = Object.keys(pureProps) as (keyof PureProps)[];
+        }
 
-        this.shouldUpdate = (p1, p2) => {
+        this.shouldUpdate = (p1, p2, s1, s2) => {
           for (let key of keys) {
-            if (p1[key] !== p2[key]) {
+            if (!equalityFunction(p1[key], p2[key])) {
               return true;
             }
           }
 
-          return false;
+          return !equalityFunction(s1, s2);
         };
       } else {
         this.shouldUpdate = () => true;
@@ -85,8 +89,8 @@ export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
       }
     }
 
-    public shouldComponentUpdate(nextProps: WrapperProps) {
-      return this.shouldUpdate(this.props, nextProps);
+    public shouldComponentUpdate(nextProps: WrapperProps, nextState: State) {
+      return this.shouldUpdate(this.props, nextProps, this.state, nextState);
     }
 
     public render() {
