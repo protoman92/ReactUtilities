@@ -2,8 +2,13 @@ import { Objects, Omit, Types, NullableKV } from 'javascriptutilities';
 import * as React from 'react';
 import { Component, ComponentClass } from 'react';
 import { ReduxType, RootType } from './viewmodel';
-interface ViewModelProps<VM> { readonly viewModel: VM; }
-interface FactoryProps { readonly viewModelFactory: unknown; }
+export type ViewModelHOCProps<VM> = { readonly viewModel: VM; };
+export type ViewModelFactoryHOCProps = { readonly viewModelFactory: unknown; };
+
+export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
+  readonly checkEqualProps?: (p1: Props, p2: Omit<Props, 'viewModel'>) => boolean;
+  readonly createViewModel: (props: Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps) => VM;
+};
 
 /**
  * This HOC method takes away most of the boilerplate for setting up a component
@@ -14,22 +19,16 @@ interface FactoryProps { readonly viewModelFactory: unknown; }
  * @param {(ComponentClass<Props & NullableKV<State>, never>)} targetComponent
  * The pure component class that will have its view model injected. Notice that
  * we do not accept any state here; state will be injected as props.
- * @param {({
- *     readonly checkEqualProps?: (p1: Omit<Props, 'viewModel'>, p2: Omit<Props, 'viewModel'>) => boolean;
- *     readonly createViewModel: (props: Omit<Props, 'viewModel'> & FactoryProps) => VM;
- *   })} options Set up options.
- * @returns {ComponentClass<Omit<Props, 'viewModel'> & FactoryProps, State>}
+ * @param {ViewModelHOCOptions<VM, Props>} options Set up options.
+ * @returns {ComponentClass<Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps, State>}
  * Wrapped component class that accepts a view model factory.
  */
-export function withViewModel<VM, Props extends ViewModelProps<VM>, State>(
+export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
   targetComponent: ComponentClass<Props & NullableKV<State>, never>,
-  options: {
-    readonly checkEqualProps?: (p1: Omit<Props, 'viewModel'>, p2: Omit<Props, 'viewModel'>) => boolean;
-    readonly createViewModel: (props: Omit<Props, 'viewModel'> & FactoryProps) => VM;
-  },
-): ComponentClass<Omit<Props, 'viewModel'> & FactoryProps, State> {
+  options: ViewModelHOCOptions<VM, Props>,
+): ComponentClass<Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps, State> {
   type PureProps = Omit<Props, 'viewModel'>;
-  type WrapperProps = PureProps & FactoryProps;
+  type WrapperProps = PureProps & ViewModelFactoryHOCProps;
 
   return class Wrapped extends Component<WrapperProps, State> {
     private readonly viewModel: VM;
