@@ -81,7 +81,7 @@ describe('View model HOC should work correctly', () => {
 
   it('Mutating state in wrapper component - should re-render pure component', () => {
     /// Setup
-    let times = 10000;
+    let times = 1000;
     let stateSb = new Subject<State>();
 
     when(viewModel.transformState(anything())).thenCall(state => {
@@ -112,6 +112,19 @@ describe('View model HOC should work correctly', () => {
     });
 
     verify(viewModel.transformState(anything())).times(times + 1);
+  });
+
+  it('Updating component - should initialize view model only once', () => {
+    let times = 1000;
+    let mounted = mount(component);
+
+    /// When
+    Numbers.range(0, times).forEach(index => {
+      mounted.setProps({ index });
+    });
+
+    /// Then
+    verify(viewModel.transformState(anything())).times(times + 1);
     expect(ViewModel.instance).toEqual(0);
   });
 
@@ -125,7 +138,7 @@ describe('View model HOC should work correctly', () => {
     component = <HOCTestComponent index={-1}
       viewModelFactory={() => instance(viewModel)} />;
 
-    let times = 10000;
+    let times = 1000;
     let mounted = mount(component);
 
     /// When
