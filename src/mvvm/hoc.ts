@@ -2,9 +2,8 @@ import { Objects, Omit, Types } from 'javascriptutilities';
 import * as React from 'react';
 import { Component, ComponentClass } from 'react';
 import { ReduxType, RootType } from './viewmodel';
-type ViewModelProps<Props, VM> = Props & { readonly viewModel: VM; };
-type VMFactoryProps = { readonly viewModelFactory: unknown; };
-type WrapperProps<VM, Props> = Omit<ViewModelProps<Props, VM>, 'viewModel'> & VMFactoryProps;
+type ViewModelProps<VM> = { readonly viewModel: VM; };
+type FactoryProps = { readonly viewModelFactory: unknown; };
 
 /**
  * This HOC method takes away most of the boilerplate for setting up a component
@@ -12,25 +11,27 @@ type WrapperProps<VM, Props> = Omit<ViewModelProps<Props, VM>, 'viewModel'> & VM
  * @template VM View model generics.
  * @template Props Props generics.
  * @template State State generics.
- * @param {(ComponentClass<ViewModelProps<Props, VM> & State, never>)} type
- * The pure component class that will have its view model injected. Notice that
- * we do not accept any state here; state will be injected as props.
+ * @param {(ComponentClass<Props & State, never>)} targetComponent The pure
+ * component class that will have its view model injected. Notice that we do
+ * not accept any state here; state will be injected as props.
  * @param {{
  *     readonly createViewModel: (options: WrapperProps<VM, Props>) => VM;
  *   }} options Set up options.
- * @returns {ComponentClass<WrapperProps<VM, Props>, State>} Wrapped component
- * class that accepts a view model factory.
+ * @returns {ComponentClass<Omit<Props, 'viewModel'> & FactoryProps, State>}
+ * Wrapped component class that accepts a view model factory.
  */
-export function withViewModel<VM, Props, State>(
-  type: ComponentClass<ViewModelProps<Props, VM> & State, never>,
+export function withViewModel<VM, Props extends ViewModelProps<VM>, State>(
+  targetComponent: ComponentClass<Props & State, never>,
   options: {
-    readonly createViewModel: (options: WrapperProps<VM, Props>) => VM;
+    readonly createViewModel: (props: Omit<Props, 'viewModel'> & FactoryProps) => VM;
   },
-): ComponentClass<WrapperProps<VM, Props>, State> {
-  return class Wrapped extends Component<WrapperProps<VM, Props>, State> {
+): ComponentClass<Omit<Props, 'viewModel'> & FactoryProps, State> {
+  type WrapperProps = Omit<Props, 'viewModel'> & FactoryProps;
+
+  return class Wrapped extends Component<WrapperProps, State> {
     private readonly viewModel: VM;
 
-    public constructor(props: WrapperProps<VM, Props>) {
+    public constructor(props: WrapperProps) {
       super(props);
       this.viewModel = options.createViewModel(props);
     }
@@ -54,12 +55,12 @@ export function withViewModel<VM, Props, State>(
     }
 
     public render() {
-      let actualProps: Props = Object.assign(
+      let actualProps = Object.assign(
         Objects.deleteKeys(this.props, 'viewModelFactory'),
         { viewModel: this.viewModel }, this.state,
-      ) as any;
+      );
 
-      return React.createElement(type, actualProps);
+      return React.createElement(targetComponent, actualProps as any);
     }
   };
 }

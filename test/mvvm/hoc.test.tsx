@@ -2,44 +2,55 @@ import { mount, shallow } from 'enzyme';
 import { Numbers } from 'javascriptutilities';
 import { ReduxViewModel, withViewModel } from 'mvvm';
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, ReactElement } from 'react';
 import { Subject } from 'rxjs';
 import { anything, instance, spy, verify, when } from 'ts-mockito-2';
 
-interface State {
-  readonly a?: number;
-  readonly b?: number;
-}
-
-function transformState({ a, b }: State) {
-  return `${a}-${b}`;
-}
-
-interface ViewModel extends ReduxViewModel<State> {
-  transformState(state: State): string;
-}
-
-interface Props {
-  readonly viewModel: ViewModel;
-}
-
-class TestComponent extends Component<Props & State, never> {
-  public render() {
-    let { viewModel } = this.props;
-    return <div>{viewModel.transformState(this.props)}</div>;
-  }
-}
-
-// tslint:disable-next-line:variable-name
-let HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
-  createViewModel: props => (props.viewModelFactory as any)(),
-});
-
 describe('View model HOC should work correctly', () => {
-  let component: JSX.Element;
+  let indexDivClass = 'index-div';
+  let stateDivClass = 'state-div';
+
+  interface State {
+    readonly a?: number;
+    readonly b?: number;
+  }
+
+  function transformState({ a, b }: State) {
+    return `${a}-${b}`;
+  }
+
+  interface ViewModel extends ReduxViewModel<State> {
+    transformState(state: State): string;
+  }
+
+  interface Props {
+    readonly index: number;
+    readonly viewModel: ViewModel;
+  }
+
+  class TestComponent extends Component<Props & State, never> {
+    public render() {
+      return <div>
+        <div className={indexDivClass}>{this.props.index}</div>
+        <div className={stateDivClass}>
+          {this.props.viewModel.transformState(this.props)}
+        </div>
+      </div>;
+    }
+  }
+
+  // tslint:disable-next-line:variable-name
+  let HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
+    createViewModel: props => (props.viewModelFactory as any)(),
+  });
+
+  let component: ReactElement<Props>;
+  let componentIndex: number;
   let viewModel: ViewModel;
 
   beforeEach(() => {
+    componentIndex = 0;
+
     viewModel = spy({
       initialize: () => { },
       deinitialize: () => { },
@@ -48,6 +59,7 @@ describe('View model HOC should work correctly', () => {
     });
 
     component = <HOCTestComponent
+      index={componentIndex}
       viewModelFactory={() => instance(viewModel)} />;
   });
 
@@ -88,7 +100,10 @@ describe('View model HOC should work correctly', () => {
       mounted.update();
 
       /// Then
-      expect(mounted.find('div').text()).toEqual(transformState(newState));
+      let indexDiv = mounted.find(`.${indexDivClass}`);
+      let stateDiv = mounted.find(`.${stateDivClass}`);
+      expect(indexDiv.text()).toEqual(`${componentIndex}`);
+      expect(stateDiv.text()).toEqual(transformState(newState));
     });
 
     verify(viewModel.transformState(anything())).times(times + 1);
