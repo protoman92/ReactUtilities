@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { ComponentType } from 'react';
 import * as Loadable from 'react-loadable';
 import { Options, OptionsWithoutRender } from 'react-loadable';
@@ -13,7 +14,7 @@ export type LoadableHOCOptions<Props, Exports extends object> = {
 /**
  * Convert a component to Loadable.
  * @template Props Props generics.
- * @template Exports Not sure why this is even needed.
+ * @template Exports Exports generics.
  * @param {LoadableHOCOptions<Props, Exports>} options Loadable options.
  * @returns {ComponentType<Props>} ComponentType instance.
  */
@@ -30,4 +31,21 @@ export function withLoadable<Props, Exports extends object>(
   } as OptionsWithoutRender<Props>);
 
   return Loadable(actualOptions);
+}
+
+/**
+ * This can be used to replace the actual loadable HOC during tests to render
+ * components synchronously.
+ * @template Props Props generics.
+ * @template Exports Exports generics.
+ * @param {LoadableHOCOptions<Props, Exports>} options Loadable options.
+ * @returns {ComponentType<Props>} ComponentType instance.
+ */
+export function withTestLoadable<Props, Exports extends object>(
+  options: LoadableHOCOptions<Props, Exports>): ComponentType<Props> {
+  if (options.hooks && options.hooks.beforeComponentLoaded) {
+    options.hooks.beforeComponentLoaded();
+  }
+
+  return (_props: Props) => <div />;
 }
