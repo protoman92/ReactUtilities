@@ -24,7 +24,7 @@ export class ViewModel implements ReduxViewModel<State> {
   public initialize() { }
   public deinitialize() { }
   public setUpStateCallback(_callback: (state: State) => void) { }
-  public transformState(_state: NullableKV<State>): string { return ''; }
+  public transformState(_state: Partial<NullableKV<State>>): string { return ''; }
 }
 
 export interface Props {
@@ -32,7 +32,7 @@ export interface Props {
   readonly viewModel: ViewModel;
 }
 
-export function TestComponent(props: Props & NullableKV<State>) {
+export function TestComponent(props: Props & Partial<NullableKV<State>>) {
   return <div>
     <div className={indexDivClass}>{props.index}</div>
     <div className={stateDivClass}>
