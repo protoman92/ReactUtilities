@@ -5,13 +5,12 @@ import { ReduxType, RootType } from './viewmodel';
 export type ViewModelHOCProps<VM> = { readonly viewModel: VM; };
 export type ViewModelFactoryHOCProps = { readonly viewModelFactory: unknown; };
 
+export type ViewModelHooks = {
+  readonly beforeViewModelCreated?: () => void;
+};
+
 export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
-  readonly hooks?: {
-    /**
-     * Take this opportunity to load dependency extensions, for example.
-     */
-    readonly beforeViewModelCreated: () => void;
-  };
+  readonly viewModelHooks?: ViewModelHooks;
   readonly filterPropDuplicates: boolean;
   readonly propKeysForComparison?: (keyof Omit<Props, 'viewModel'>)[];
   readonly checkEquality?: (obj1: unknown, obj2: unknown) => boolean;
@@ -38,8 +37,15 @@ export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
   type PureProps = Omit<Props, 'viewModel'>;
   type WrapperProps = PureProps & ViewModelFactoryHOCProps;
   type StoredWrapperProps = Readonly<WrapperProps> & Readonly<{ children?: ReactNode }>;
+  let {
+    createViewModel,
+    viewModelHooks,
+    filterPropDuplicates,
+    propKeysForComparison,
+    checkEquality,
+  } = options;
 
-  return class Wrapped extends Component<WrapperProps, State> {
+  return class Wrapper extends Component<WrapperProps, State> {
     private readonly viewModel: VM;
     private readonly shouldUpdate: (
       currentProps: StoredWrapperProps,
@@ -51,18 +57,18 @@ export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
     public constructor(props: WrapperProps) {
       super(props);
 
-      if (options.hooks && options.hooks.beforeViewModelCreated) {
-        options.hooks.beforeViewModelCreated();
+      if (viewModelHooks && viewModelHooks.beforeViewModelCreated) {
+        viewModelHooks.beforeViewModelCreated();
       }
 
-      this.viewModel = options.createViewModel(props);
-      let equalityFunction = options.checkEquality || ((o1, o2) => o1 === o2);
+      this.viewModel = createViewModel(props);
+      let equalityFunction = checkEquality || ((o1, o2) => o1 === o2);
 
-      if (options.filterPropDuplicates) {
+      if (filterPropDuplicates) {
         let keys: (keyof PureProps)[];
 
-        if (options.propKeysForComparison instanceof Array) {
-          keys = options.propKeysForComparison;
+        if (propKeysForComparison instanceof Array) {
+          keys = propKeysForComparison;
         } else {
           let pureProps = Objects.deleteKeys(props, 'viewModelFactory');
           keys = Object.keys(pureProps) as (keyof PureProps)[];

@@ -1,67 +1,32 @@
 import { mount, shallow } from 'enzyme';
-import { NullableKV, Numbers } from 'javascriptutilities';
+import { Numbers } from 'javascriptutilities';
 import * as React from 'react';
-import { Component, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { Subject } from 'rxjs';
 import { anything, instance, spy, verify, when } from 'ts-mockito-2';
-import { ReduxViewModel, withViewModel } from '../src';
+import { ViewModelHooks, withViewModel } from '../src/hoc.viewmodel';
+import { indexDivClass, Props, State, stateDivClass, TestComponent, transformState, ViewModel } from './testcomponent';
 let deepEqual = require('deep-equal');
 
 describe('View model HOC should work correctly', () => {
-  let indexDivClass = 'index-div';
-  let stateDivClass = 'state-div';
-
-  interface State {
-    readonly a: number;
-    readonly b: number;
-  }
-
-  function transformState({ a, b }: NullableKV<State>) {
-    return `${a}-${b}`;
-  }
-
-  class ViewModel implements ReduxViewModel<State> {
-    public static instance: number;
-
-    public constructor() {
-      ViewModel.instance += 1;
-    }
-
-    public initialize() { }
-    public deinitialize() { }
-    public setUpStateCallback(_callback: (state: State) => void) { }
-    public transformState(_state: NullableKV<State>): string { return ''; }
-  }
-
-  interface Props {
-    readonly index: number;
-    readonly viewModel: ViewModel;
-  }
-
-  class TestComponent extends Component<Props & NullableKV<State>, never> {
-    public render() {
-      return <div>
-        <div className={indexDivClass}>{this.props.index}</div>
-        <div className={stateDivClass}>
-          {this.props.viewModel.transformState(this.props)}
-        </div>
-      </div>;
-    }
-  }
-
-  // tslint:disable-next-line:variable-name
-  let HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
-    hooks: { beforeViewModelCreated: () => { } },
-    filterPropDuplicates: true,
-    checkEquality: deepEqual,
-    createViewModel: props => (props.viewModelFactory as any)(),
-  });
-
+  let viewModelHooks: ViewModelHooks;
   let component: ReactElement<Props>;
   let componentIndex: number;
   let viewModel: ViewModel;
 
   beforeEach(() => {
+    viewModelHooks = spy({
+      beforeViewModelCreated: () => { },
+    });
+
+    // tslint:disable-next-line:variable-name
+    let HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
+      viewModelHooks: instance(viewModelHooks),
+      filterPropDuplicates: true,
+      checkEquality: deepEqual,
+      createViewModel: props => (props.viewModelFactory as any)(),
+    });
+
     ViewModel.instance = -1;
     componentIndex = 1000;
     viewModel = spy(new ViewModel());
@@ -71,7 +36,7 @@ describe('View model HOC should work correctly', () => {
       viewModelFactory={() => instance(viewModel)} />;
   });
 
-  it('Wrapping base component class with view model wrapped - should work', () => {
+  it('Wrapping base component class with view model wrapper - should work', () => {
     /// Setup
     let shallowed = shallow(component);
     shallowed.unmount();
@@ -80,6 +45,7 @@ describe('View model HOC should work correctly', () => {
     verify(viewModel.initialize()).once();
     verify(viewModel.deinitialize()).once();
     verify(viewModel.setUpStateCallback(anything())).once();
+    verify(viewModelHooks.beforeViewModelCreated!()).once();
   });
 
   it('Mutating state in wrapper component - should re-render pure component', () => {
@@ -133,7 +99,8 @@ describe('View model HOC should work correctly', () => {
 
   it('Filtering duplicate props with defined keys - should ensure non-duplicate props', () => {
     /// Setup
-    HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
+    // tslint:disable-next-line:variable-name
+    let HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
       filterPropDuplicates: true,
       checkEquality: deepEqual,
       propKeysForComparison: ['index'],
@@ -157,7 +124,8 @@ describe('View model HOC should work correctly', () => {
 
   it('Filtering duplicate props without prop keys - should use all keys', () => {
     /// Setup
-    HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
+    // tslint:disable-next-line:variable-name
+    let HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
       filterPropDuplicates: true,
       checkEquality: deepEqual,
       createViewModel: props => (props.viewModelFactory as any)(),
