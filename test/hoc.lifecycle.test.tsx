@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { LifecycleHooks, LifecycleHooksHOCOptions, withLifecycleHooks } from 'hoc.lifecycle';
 import * as React from 'react';
 import { ReactElement } from 'react';
@@ -8,7 +8,6 @@ import { Props, TestComponent, ViewModel } from './testcomponent';
 describe('Lifecycle hooks HOC should work correctly', () => {
   let lifecycleHooks: LifecycleHooks;
   let lifecycleOptions: LifecycleHooksHOCOptions;
-
   let component: ReactElement<Props>;
   let viewModel: ViewModel;
 
@@ -35,8 +34,8 @@ describe('Lifecycle hooks HOC should work correctly', () => {
 
   it('Wrapping base component class with lifecycle wrapper - should work', () => {
     /// Setup
-    let shallowed = shallow(component);
-    shallowed.unmount();
+    let mounted = mount(component);
+    mounted.unmount();
 
     /// When && Then
     verify(lifecycleHooks.componentDidMount!()).once();

@@ -1,27 +1,31 @@
-import { shallow } from 'enzyme';
-import { CompleteSetupHOCOptions, LifecycleHooks, withCompleteSetup } from 'hoc.all';
+import { mount } from 'enzyme';
+import { CompleteSetupHOCOptions, withCompleteSetup } from 'hoc.all';
+import { LifecycleHooks } from 'hoc.lifecycle';
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { instance, spy, verify } from 'ts-mockito-2';
+import { anything, instance, mock, spy, verify } from 'ts-mockito-2';
 import { Props, State, TestComponent, ViewModel } from './testcomponent';
 let deepEqual = require('deep-equal');
 
 describe('Complete HOC should work correctly', () => {
   let lifecycleHooks: LifecycleHooks;
-  let completeOptions: CompleteSetupHOCOptions;
-
+  let completeOptions: CompleteSetupHOCOptions<ViewModel, Props>;
   let component: ReactElement<Props>;
   let viewModel: ViewModel;
 
   beforeEach(() => {
+    viewModel = mock(ViewModel);
+
     lifecycleHooks = spy({
       componentDidMount: () => { },
       componentWillUnmount: () => { },
     });
 
-    completeOptions = spy({
+    completeOptions = spy<CompleteSetupHOCOptions<ViewModel, Props>>({
       lifecycleHooks: instance(lifecycleHooks),
-      loadExtensions: () => { },
+      filterPropDuplicates: false,
+      checkEquality: deepEqual,
+      createViewModel: props => (props.viewModelFactory as any)(),
     });
 
     // tslint:disable-next-line:variable-name
@@ -32,20 +36,20 @@ describe('Complete HOC should work correctly', () => {
       createViewModel: props => (props.viewModelFactory as any)(),
     });
 
-    viewModel = spy(new ViewModel());
-
     component = <HOCTestComponent index={0}
       viewModelFactory={() => instance(viewModel)} />;
   });
 
   it('Wrapping base component class with complete wrapper - should work', () => {
     /// Setup
-    let shallowed = shallow(component);
-    shallowed.unmount();
+    let mounted = mount(component);
+    mounted.unmount();
 
     /// When && Then
+    verify(viewModel.initialize()).once();
+    verify(viewModel.deinitialize()).once();
+    verify(viewModel.setUpStateCallback(anything())).once();
     verify(lifecycleHooks.componentDidMount!()).once();
     verify(lifecycleHooks.componentWillUnmount!()).once();
-    verify(completeOptions.loadExtensions()).once();
   });
 });

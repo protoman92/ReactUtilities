@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { Numbers } from 'javascriptutilities';
 import * as React from 'react';
 import { ReactElement } from 'react';
@@ -38,8 +38,8 @@ describe('View model HOC should work correctly', () => {
 
   it('Wrapping base component class with view model wrapper - should work', () => {
     /// Setup
-    let shallowed = shallow(component);
-    shallowed.unmount();
+    let mounted = mount(component);
+    mounted.unmount();
 
     /// When && Then
     verify(viewModel.initialize()).once();
