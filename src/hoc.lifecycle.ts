@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component, ComponentClass, StatelessComponent } from 'react';
 
 export type LifecycleHooks = {
+  readonly onConstruction?: () => void;
   readonly componentDidMount?: () => void;
   readonly componentWillUnmount?: () => void;
 };
@@ -26,6 +27,14 @@ export function withLifecycleHooks<Props, State = never>(
   let { lifecycleHooks } = options;
 
   return class Wrapper extends Component<Props, State> {
+    public constructor(props: Props) {
+      super(props);
+
+      if (lifecycleHooks.onConstruction) {
+        lifecycleHooks.onConstruction();
+      }
+    }
+
     public componentDidMount() {
       if (lifecycleHooks && lifecycleHooks.componentDidMount) {
         lifecycleHooks.componentDidMount();

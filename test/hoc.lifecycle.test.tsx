@@ -13,6 +13,7 @@ describe('Lifecycle hooks HOC should work correctly', () => {
 
   beforeEach(() => {
     lifecycleHooks = spy({
+      onConstruction: () => { },
       componentDidMount: () => { },
       componentWillUnmount: () => { },
     });
@@ -38,6 +39,7 @@ describe('Lifecycle hooks HOC should work correctly', () => {
     mounted.unmount();
 
     /// When && Then
+    verify(lifecycleHooks.onConstruction!()).once();
     verify(lifecycleHooks.componentDidMount!()).once();
     verify(lifecycleHooks.componentWillUnmount!()).once();
   });

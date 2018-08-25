@@ -17,6 +17,7 @@ describe('Complete HOC should work correctly', () => {
     viewModel = mock(ViewModel);
 
     lifecycleHooks = spy({
+      onConstruction: () => { },
       componentDidMount: () => { },
       componentWillUnmount: () => { },
     });
@@ -49,6 +50,7 @@ describe('Complete HOC should work correctly', () => {
     verify(viewModel.initialize()).once();
     verify(viewModel.deinitialize()).once();
     verify(viewModel.setUpStateCallback(anything())).once();
+    verify(lifecycleHooks.onConstruction!()).once();
     verify(lifecycleHooks.componentDidMount!()).once();
     verify(lifecycleHooks.componentWillUnmount!()).once();
   });
