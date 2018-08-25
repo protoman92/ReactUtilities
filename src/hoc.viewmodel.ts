@@ -1,6 +1,6 @@
 import { Nullable, NullableKV, Objects, Omit, Types } from 'javascriptutilities';
 import * as React from 'react';
-import { Component, ComponentClass, ReactNode } from 'react';
+import { Component, ComponentClass, ReactNode, StatelessComponent } from 'react';
 import { ReduxType, RootType } from './viewmodel';
 export type ViewModelHOCProps<VM> = { readonly viewModel: VM; };
 export type ViewModelFactoryHOCProps = { readonly viewModelFactory: unknown; };
@@ -23,15 +23,18 @@ export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
  * @template VM View model generics.
  * @template Props Props generics.
  * @template State State generics.
- * @param {(ComponentClass<Props & NullableKV<State>, never>)} targetComponent
- * The pure component class that will have its view model injected. Notice that
- * we do not accept any state here; state will be injected as props.
+ * @param {(StatelessComponent<Props & NullableKV<State>> |
+ *     ComponentClass<Props & NullableKV<State>, never>)} targetComponent
+ * The base component class that will have its view model injected. This can
+ * either be a stateless component, or a class component without state.
  * @param {ViewModelHOCOptions<VM, Props>} options Set up options.
  * @returns {ComponentClass<Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps, State>}
  * Wrapped component class that accepts a view model factory.
  */
 export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
-  targetComponent: ComponentClass<Props & NullableKV<State>, never>,
+  targetComponent:
+    StatelessComponent<Props & NullableKV<State>> |
+    ComponentClass<Props & NullableKV<State>, never>,
   options: ViewModelHOCOptions<VM, Props>,
 ): ComponentClass<Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps, State> {
   type PureProps = Omit<Props, 'viewModel'>;

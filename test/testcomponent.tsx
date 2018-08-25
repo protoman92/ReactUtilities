@@ -1,7 +1,6 @@
 import { NullableKV } from 'javascriptutilities';
-import { ReduxViewModel } from '../src';
-import { Component } from 'react';
 import * as React from 'react';
+import { ReduxViewModel } from '../src';
 
 export let indexDivClass = 'index-div';
 export let stateDivClass = 'state-div';
@@ -33,13 +32,11 @@ export interface Props {
   readonly viewModel: ViewModel;
 }
 
-export class TestComponent extends Component<Props & NullableKV<State>, never> {
-  public render() {
-    return <div>
-      <div className={indexDivClass}>{this.props.index}</div>
-      <div className={stateDivClass}>
-        {this.props.viewModel.transformState(this.props)}
-      </div>
-    </div>;
-  }
+export function TestComponent(props: Props & NullableKV<State>) {
+  return <div>
+    <div className={indexDivClass}>{props.index}</div>
+    <div className={stateDivClass}>
+      {props.viewModel.transformState(props)}
+    </div>
+  </div>;
 }

@@ -1,6 +1,6 @@
 import { NullableKV, Omit } from 'javascriptutilities';
 import * as React from 'react';
-import { Component, ComponentClass } from 'react';
+import { Component, ComponentClass, StatelessComponent } from 'react';
 import { ViewModelFactoryHOCProps, ViewModelHOCOptions, ViewModelHOCProps, withViewModel } from './hoc.viewmodel';
 
 export type LifecycleHooks = {
@@ -9,6 +9,11 @@ export type LifecycleHooks = {
 };
 
 export type CompleteSetupHOCOptions = {
+  /**
+   *
+   *
+   * @type {LifecycleHooks}
+   */
   lifecycleHooks?: LifecycleHooks,
 
   /**
@@ -21,7 +26,9 @@ export type CompleteSetupHOCOptions = {
  * Complete set up for a view model-based component.
  */
 export function withCompleteSetup<VM, Props extends ViewModelHOCProps<VM>, State>(
-  targetComponent: ComponentClass<Props & NullableKV<State>, never>,
+  targetComponent:
+    StatelessComponent<Props & NullableKV<State>> |
+    ComponentClass<Props & NullableKV<State>, never>,
   options: CompleteSetupHOCOptions & ViewModelHOCOptions<VM, Props>,
 ): ComponentClass<Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps, State> {
   type PureProps = Omit<Props, 'viewModel'>;
