@@ -5,7 +5,7 @@ import { ReduxType, RootType } from './viewmodel';
 export type ViewModelHOCProps<VM> = { readonly viewModel: VM; };
 export type ViewModelFactoryHOCProps = { readonly viewModelFactory: unknown; };
 
-export type FactorifiedViewModelHOCProps<VM, Props extends ViewModelHOCProps<VM>> =
+export type FactorifiedViewModelHOCProps<Props extends ViewModelHOCProps<any>> =
   Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps;
 
 export type ViewModelHOCHooks = {
@@ -31,7 +31,7 @@ export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
  * The base component class that will have its view model injected. This can
  * either be a stateless component, or a class component without state.
  * @param {ViewModelHOCOptions<VM, Props>} options Set up options.
- * @returns {ComponentType<FactorifiedViewModelHOCProps<VM, Props>>}
+ * @returns {ComponentType<FactorifiedViewModelHOCProps<Props>>}
  * Wrapped component class that accepts a view model factory.
  */
 export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
@@ -39,7 +39,7 @@ export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
     StatelessComponent<Props & Partial<NullableKV<State>>> |
     ComponentType<Props & Partial<NullableKV<State>>>,
   options: ViewModelHOCOptions<VM, Props>,
-): ComponentType<FactorifiedViewModelHOCProps<VM, Props>> {
+): ComponentType<FactorifiedViewModelHOCProps<Props>> {
   type PureProps = Omit<Props, 'viewModel'>;
   type WrapperProps = PureProps & ViewModelFactoryHOCProps;
   type StoredWrapperProps = Readonly<WrapperProps> & Readonly<{ children?: ReactNode }>;

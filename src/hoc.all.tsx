@@ -15,7 +15,7 @@ export function withCompleteSetup<VM, Props extends ViewModelHOCProps<VM>, State
     StatelessComponent<Props & Partial<NullableKV<State>>> |
     ComponentType<Props & Partial<NullableKV<State>>>,
   options: CompleteSetupHOCOptions<VM, Props>,
-): ComponentType<FactorifiedViewModelHOCProps<VM, Props>> {
+): ComponentType<FactorifiedViewModelHOCProps<Props>> {
   // tslint:disable-next-line:variable-name
   let ViewModelHOC = withViewModel<VM, Props, State>(targetComponent, options);
   return withLifecycleHooks(ViewModelHOC, options);
