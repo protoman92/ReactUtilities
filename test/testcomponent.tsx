@@ -29,6 +29,7 @@ export class ViewModel implements ReduxViewModel<State> {
 
 export interface Props {
   readonly index: number;
+  readonly callback?: () => void;
   readonly viewModel: ViewModel;
 }
 

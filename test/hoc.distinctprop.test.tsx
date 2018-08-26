@@ -13,12 +13,14 @@ describe('Distinct props HOC should work correctly', () => {
   beforeEach(() => {
     // tslint:disable-next-line:variable-name
     let HOCTestComponent = withDistinctProps(TestComponent, {
-      propKeysForComparison: ['index', 'a'],
+      propKeysForComparison: ['index', 'a', 'callback'],
       checkEquality: require('deep-equal'),
     });
 
     viewModel = spy(new ViewModel());
-    component = <HOCTestComponent index={0} viewModel={instance(viewModel)} />;
+    component = <HOCTestComponent
+      index={0} callback={() => { }}
+      viewModel={instance(viewModel)} />;
   });
 
   it('Wrapping base component class with distinct prop wrapper - should work', () => {
@@ -37,6 +39,10 @@ describe('Distinct props HOC should work correctly', () => {
 
     Numbers.range(0, times).forEach(iter => {
       mounted.setProps({ b: iter });
+    });
+
+    Numbers.range(0, times).forEach(iter => {
+      mounted.setProps({ callback: () => console.log(iter) });
     });
 
     /// Then

@@ -24,8 +24,12 @@ export function withDistinctProps<Props>(
     public static displayName = getComponentName(targetComponent);
 
     public shouldComponentUpdate(nextProps: Props) {
+      let props = this.props;
+
       for (let key of propKeysForComparison) {
-        if (!checkEquality(this.props[key], nextProps[key])) {
+        if (props[key] instanceof Function) {
+          continue;
+        } else if (!checkEquality(props[key], nextProps[key])) {
           return true;
         }
       }
