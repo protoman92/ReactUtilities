@@ -1,4 +1,4 @@
-export { CompleteSetupHOCOptions, withCompleteSetup } from './hoc.all';
+export { CompleteSetupHOCOptions, withCompleteSetup, withTestCompleteSetup } from './hoc.all';
 export { LifecycleHOCHooks, LifecycleHooksHOCOptions, withLifecycleHooks } from './hoc.lifecycle';
 export { LoadableHOCOptions, LoadableHOCHooks, withLoadable, withTestLoadable } from './hoc.loadable';
 export {

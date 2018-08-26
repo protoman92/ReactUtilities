@@ -1,5 +1,5 @@
-import { mount } from 'enzyme';
-import { CompleteSetupHOCOptions, withCompleteSetup } from 'hoc.all';
+import { mount, shallow } from 'enzyme';
+import { CompleteSetupHOCOptions, withCompleteSetup, withTestCompleteSetup } from 'hoc.all';
 import { LifecycleHOCHooks } from 'hoc.lifecycle';
 import * as React from 'react';
 import { ReactElement } from 'react';
@@ -53,5 +53,30 @@ describe('Complete HOC should work correctly', () => {
     verify(lifecycleHooks.onConstruction!()).once();
     verify(lifecycleHooks.componentDidMount!()).once();
     verify(lifecycleHooks.componentWillUnmount!()).once();
+  });
+});
+
+describe('Test complete HOC should work correctly', () => {
+  let component: ReactElement<Props>;
+  let viewModel: ViewModel;
+
+  beforeEach(() => {
+    viewModel = mock(ViewModel);
+
+    // tslint:disable-next-line:variable-name
+    let HOCTestComponent = withTestCompleteSetup
+      <ViewModel, Props, State>(TestComponent, {} as any);
+
+    component = <HOCTestComponent index={0}
+      viewModelFactory={() => instance(viewModel)} />;
+  });
+
+  it('Wrapping base component class with complete wrapper - should work', () => {
+    /// Setup
+    let shallowed = shallow(component);
+
+    /// When && Then
+    expect(shallowed.find(TestComponent)).toHaveLength(1);
+    shallowed.unmount();
   });
 });
