@@ -20,14 +20,17 @@ export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
   readonly createViewModel: (props: Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps) => VM;
 };
 
+export type TargetViewModelHOCComponent<VM, Props extends ViewModelHOCProps<VM>, State> =
+  StatelessComponent<Props & Partial<NullableKV<State>>> |
+  ComponentType<Props & Partial<NullableKV<State>>>;
+
 /**
  * This HOC method takes away most of the boilerplate for setting up a component
  * with view model.
  * @template VM View model generics.
  * @template Props Props generics.
  * @template State State generics.
- * @param {(StatelessComponent<Props & Partial<NullableKV<State>>> |
- *     ComponentType<Props & Partial<NullableKV<State>>>)} targetComponent
+ * @param {TargetViewModelHOCComponent<VM, Props extends ViewModelHOCProps<VM>, State>} targetComponent
  * The base component class that will have its view model injected. This can
  * either be a stateless component, or a class component without state.
  * @param {ViewModelHOCOptions<VM, Props>} options Set up options.
@@ -35,9 +38,7 @@ export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
  * Wrapped component class that accepts a view model factory.
  */
 export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
-  targetComponent:
-    StatelessComponent<Props & Partial<NullableKV<State>>> |
-    ComponentType<Props & Partial<NullableKV<State>>>,
+  targetComponent: TargetViewModelHOCComponent<VM, Props, State>,
   options: ViewModelHOCOptions<VM, Props>,
 ): ComponentType<FactorifiedViewModelHOCProps<Props>> {
   type PureProps = Omit<Props, 'viewModel'>;

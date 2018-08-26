@@ -3,6 +3,7 @@ export { LifecycleHOCHooks, LifecycleHooksHOCOptions, withLifecycleHooks } from 
 export { LoadableHOCOptions, LoadableHOCHooks, withLoadable, withTestLoadable } from './hoc.loadable';
 export {
   FactorifiedViewModelHOCProps,
+  TargetViewModelHOCComponent,
   ViewModelFactoryHOCProps,
   ViewModelHOCOptions,
   ViewModelHOCProps,
