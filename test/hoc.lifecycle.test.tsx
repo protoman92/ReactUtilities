@@ -1,12 +1,12 @@
 import { mount } from 'enzyme';
-import { LifecycleHooks, LifecycleHooksHOCOptions, withLifecycleHooks } from 'hoc.lifecycle';
+import { LifecycleHOCHooks, LifecycleHooksHOCOptions, withLifecycleHooks } from 'hoc.lifecycle';
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { instance, spy, verify } from 'ts-mockito-2';
 import { Props, TestComponent, ViewModel } from './testcomponent';
 
 describe('Lifecycle hooks HOC should work correctly', () => {
-  let lifecycleHooks: LifecycleHooks;
+  let lifecycleHooks: LifecycleHOCHooks;
   let lifecycleOptions: LifecycleHooksHOCOptions;
   let component: ReactElement<Props>;
   let viewModel: ViewModel;

@@ -3,12 +3,12 @@ import { ComponentType } from 'react';
 import * as Loadable from 'react-loadable';
 import { Options, OptionsWithoutRender } from 'react-loadable';
 
-export type LoadableHooks = {
+export type LoadableHOCHooks = {
   readonly beforeComponentLoaded?: () => void;
 };
 
 export type LoadableHOCOptions<Props, Exports extends object> = {
-  readonly hooks?: LoadableHooks;
+  readonly hooks?: LoadableHOCHooks;
 } & Options<Props, Exports>;
 
 /**

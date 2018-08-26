@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import { CompleteSetupHOCOptions, withCompleteSetup } from 'hoc.all';
-import { LifecycleHooks } from 'hoc.lifecycle';
+import { LifecycleHOCHooks } from 'hoc.lifecycle';
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { anything, instance, mock, spy, verify } from 'ts-mockito-2';
@@ -8,7 +8,7 @@ import { Props, State, TestComponent, ViewModel } from './testcomponent';
 let deepEqual = require('deep-equal');
 
 describe('Complete HOC should work correctly', () => {
-  let lifecycleHooks: LifecycleHooks;
+  let lifecycleHooks: LifecycleHOCHooks;
   let completeOptions: CompleteSetupHOCOptions<ViewModel, Props>;
   let component: ReactElement<Props>;
   let viewModel: ViewModel;

@@ -1,12 +1,12 @@
 import { mount } from 'enzyme';
-import { LoadableHOCOptions, LoadableHooks, withLoadable, withTestLoadable } from 'hoc.loadable';
+import { LoadableHOCOptions, LoadableHOCHooks, withLoadable, withTestLoadable } from 'hoc.loadable';
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { instance, spy, verify } from 'ts-mockito-2';
 import { Props, ViewModel } from './testcomponent';
 
 describe('Lifecycle hooks HOC should work correctly', () => {
-  let loadableHooks: LoadableHooks;
+  let loadableHooks: LoadableHOCHooks;
   let loadableOptions: LoadableHOCOptions<Props, {}>;
   let component: ReactElement<Props>;
   let viewModel: ViewModel;
@@ -48,7 +48,7 @@ describe('Lifecycle hooks HOC should work correctly', () => {
 });
 
 describe('Test lifecycle hooks HOC should work correctly', () => {
-  let loadableHooks: LoadableHooks;
+  let loadableHooks: LoadableHOCHooks;
   let loadableOptions: LoadableHOCOptions<Props, {}>;
   let component: ReactElement<Props>;
   let viewModel: ViewModel;

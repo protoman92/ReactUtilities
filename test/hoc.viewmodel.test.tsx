@@ -4,12 +4,12 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import { Subject } from 'rxjs';
 import { anything, instance, spy, verify, when } from 'ts-mockito-2';
-import { ViewModelHooks, withViewModel } from '../src/hoc.viewmodel';
+import { ViewModelHOCHooks, withViewModel } from '../src/hoc.viewmodel';
 import { indexDivClass, Props, State, stateDivClass, TestComponent, transformState, ViewModel } from './testcomponent';
 let deepEqual = require('deep-equal');
 
 describe('View model HOC should work correctly', () => {
-  let viewModelHooks: ViewModelHooks;
+  let viewModelHooks: ViewModelHOCHooks;
   let component: ReactElement<Props>;
   let componentIndex: number;
   let viewModel: ViewModel;

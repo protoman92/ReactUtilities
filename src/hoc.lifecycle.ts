@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Component, ComponentType, StatelessComponent } from 'react';
 
-export type LifecycleHooks = {
+export type LifecycleHOCHooks = {
   readonly onConstruction?: () => void;
   readonly componentDidMount?: () => void;
   readonly componentWillUnmount?: () => void;
 };
 
 export type LifecycleHooksHOCOptions = {
-  readonly lifecycleHooks: LifecycleHooks;
+  readonly lifecycleHooks: LifecycleHOCHooks;
 };
 
 /**

@@ -5,12 +5,15 @@ import { ReduxType, RootType } from './viewmodel';
 export type ViewModelHOCProps<VM> = { readonly viewModel: VM; };
 export type ViewModelFactoryHOCProps = { readonly viewModelFactory: unknown; };
 
-export type ViewModelHooks = {
+export type FactorifiedViewModelHOCProps<VM, Props extends ViewModelHOCProps<VM>> =
+  Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps;
+
+export type ViewModelHOCHooks = {
   readonly beforeViewModelCreated?: () => void;
 };
 
 export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
-  readonly viewModelHooks?: ViewModelHooks;
+  readonly viewModelHooks?: ViewModelHOCHooks;
   readonly filterPropDuplicates: boolean;
   readonly propKeysForComparison?: (keyof Omit<Props, 'viewModel'>)[];
   readonly checkEquality?: (obj1: unknown, obj2: unknown) => boolean;
@@ -28,7 +31,7 @@ export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
  * The base component class that will have its view model injected. This can
  * either be a stateless component, or a class component without state.
  * @param {ViewModelHOCOptions<VM, Props>} options Set up options.
- * @returns {ComponentClass<Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps, State>}
+ * @returns {ComponentType<FactorifiedViewModelHOCProps<VM, Props>>}
  * Wrapped component class that accepts a view model factory.
  */
 export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
@@ -36,7 +39,7 @@ export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
     StatelessComponent<Props & Partial<NullableKV<State>>> |
     ComponentType<Props & Partial<NullableKV<State>>>,
   options: ViewModelHOCOptions<VM, Props>,
-): ComponentType<Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps> {
+): ComponentType<FactorifiedViewModelHOCProps<VM, Props>> {
   type PureProps = Omit<Props, 'viewModel'>;
   type WrapperProps = PureProps & ViewModelFactoryHOCProps;
   type StoredWrapperProps = Readonly<WrapperProps> & Readonly<{ children?: ReactNode }>;
