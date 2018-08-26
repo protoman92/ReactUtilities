@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Component, ComponentType, StatelessComponent } from 'react';
+import { getComponentName } from './util';
 
 export type LifecycleHOCHooks = {
   readonly onConstruction?: () => void;
@@ -26,7 +27,9 @@ export function withLifecycleHooks<Props>(
 ): ComponentType<Props> {
   let { lifecycleHooks } = options;
 
-  return class Wrapper extends Component<Props, never> {
+  return class LifecycleWrapper extends Component<Props, never> {
+    public static displayName = getComponentName(targetComponent);
+
     public constructor(props: Props) {
       super(props);
 

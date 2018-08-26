@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Component, ComponentType } from 'react';
+import { getComponentName } from './util';
 
 export type DistinctPropsHOCOptions<Props> = {
   readonly propKeysForComparison: (keyof Props)[];
@@ -19,7 +20,9 @@ export function withDistinctProps<Props>(
 ): ComponentType<Props> {
   let { checkEquality, propKeysForComparison } = options;
 
-  return class DistinctPropWrapper extends Component<Props> {
+  return class DistinctPropWrapper extends Component<Props, never> {
+    public static displayName = getComponentName(targetComponent);
+
     public shouldComponentUpdate(nextProps: Props) {
       for (let key of propKeysForComparison) {
         if (!checkEquality(this.props[key], nextProps[key])) {

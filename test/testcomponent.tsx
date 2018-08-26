@@ -32,6 +32,7 @@ export interface Props {
   readonly viewModel: ViewModel;
 }
 
+// tslint:disable-next-line:variable-name
 export function TestComponent(props: Props & Partial<NullableKV<State>>) {
   return <div>
     <div className={indexDivClass}>{props.index}</div>

@@ -1,6 +1,7 @@
 import { Nullable, NullableKV, Objects, Omit, Types } from 'javascriptutilities';
 import * as React from 'react';
 import { Component, ComponentType, ReactNode, StatelessComponent } from 'react';
+import { getComponentName } from './util';
 import { ReduxType, RootType } from './viewmodel';
 export type ViewModelHOCProps<VM> = { readonly viewModel: VM; };
 export type ViewModelFactoryHOCProps = { readonly viewModelFactory: unknown; };
@@ -52,7 +53,9 @@ export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
     checkEquality,
   } = options;
 
-  return class Wrapper extends Component<WrapperProps, State> {
+  return class ViewModelWrapper extends Component<WrapperProps, State> {
+    public static displayName = getComponentName(targetComponent);
+
     private readonly viewModel: VM;
     private readonly shouldUpdate: (
       currentProps: StoredWrapperProps,

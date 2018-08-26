@@ -1,5 +1,5 @@
 export { CompleteSetupHOCOptions, withCompleteSetup, withTestCompleteSetup } from './hoc.all';
-export { DistinctPropsHOCOptions, withDistinctProps } from 'hoc.distinctprop';
+export { DistinctPropsHOCOptions, withDistinctProps } from './hoc.distinctprop';
 export { LifecycleHOCHooks, LifecycleHooksHOCOptions, withLifecycleHooks } from './hoc.lifecycle';
 export { LoadableHOCOptions, LoadableHOCHooks, withLoadable, withTestLoadable } from './hoc.loadable';
 export {
@@ -11,4 +11,5 @@ export {
   ViewModelHOCHooks,
   withViewModel,
 } from './hoc.viewmodel';
+export { getComponentName } from './util';
 export { ReduxType as ReduxViewModel, RootType as RootViewModel } from './viewmodel';
