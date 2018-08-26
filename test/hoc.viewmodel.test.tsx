@@ -6,7 +6,6 @@ import { Subject } from 'rxjs';
 import { anything, instance, spy, verify, when } from 'ts-mockito-2';
 import { ViewModelHOCHooks, withViewModel } from '../src/hoc.viewmodel';
 import { indexDivClass, Props, State, stateDivClass, TestComponent, transformState, ViewModel } from './testcomponent';
-let deepEqual = require('deep-equal');
 
 describe('View model HOC should work correctly', () => {
   let viewModelHooks: ViewModelHOCHooks;
@@ -22,8 +21,6 @@ describe('View model HOC should work correctly', () => {
     // tslint:disable-next-line:variable-name
     let HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
       viewModelHooks: instance(viewModelHooks),
-      filterPropDuplicates: true,
-      checkEquality: deepEqual,
       createViewModel: props => (props.viewModelFactory as any)(),
     });
 
@@ -95,54 +92,5 @@ describe('View model HOC should work correctly', () => {
     /// Then
     verify(viewModel.transformState(anything())).times(times + 1);
     expect(ViewModel.instance).toEqual(0);
-  });
-
-  it('Filtering duplicate props with defined keys - should ensure non-duplicate props', () => {
-    /// Setup
-    // tslint:disable-next-line:variable-name
-    let HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
-      filterPropDuplicates: true,
-      checkEquality: deepEqual,
-      propKeysForComparison: ['index'],
-      createViewModel: props => (props.viewModelFactory as any)(),
-    });
-
-    component = <HOCTestComponent index={-1}
-      viewModelFactory={() => instance(viewModel)} />;
-
-    let times = 1000;
-    let mounted = mount(component);
-
-    /// When
-    Numbers.range(0, times).forEach(index => {
-      mounted.setProps({ index });
-    });
-
-    /// Then
-    verify(viewModel.transformState(anything())).times(times + 1);
-  });
-
-  it('Filtering duplicate props without prop keys - should use all keys', () => {
-    /// Setup
-    // tslint:disable-next-line:variable-name
-    let HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
-      filterPropDuplicates: true,
-      checkEquality: deepEqual,
-      createViewModel: props => (props.viewModelFactory as any)(),
-    });
-
-    component = <HOCTestComponent index={-1}
-      viewModelFactory={() => instance(viewModel)} />;
-
-    let times = 1000;
-    let mounted = mount(component);
-
-    /// When
-    Numbers.range(0, times).forEach(index => {
-      mounted.setProps({ index });
-    });
-
-    /// Then
-    verify(viewModel.transformState(anything())).times(times + 1);
   });
 });

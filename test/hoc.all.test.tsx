@@ -1,6 +1,7 @@
 import { mount, shallow } from 'enzyme';
 import { CompleteSetupHOCOptions, withCompleteSetup, withTestCompleteSetup } from 'hoc.all';
 import { LifecycleHOCHooks } from 'hoc.lifecycle';
+import { Numbers } from 'javascriptutilities';
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { anything, instance, mock, spy, verify } from 'ts-mockito-2';
@@ -24,7 +25,6 @@ describe('Complete HOC should work correctly', () => {
 
     completeOptions = spy<CompleteSetupHOCOptions<ViewModel, Props>>({
       lifecycleHooks: instance(lifecycleHooks),
-      filterPropDuplicates: false,
       checkEquality: deepEqual,
       createViewModel: props => (props.viewModelFactory as any)(),
     });
@@ -32,7 +32,6 @@ describe('Complete HOC should work correctly', () => {
     // tslint:disable-next-line:variable-name
     let HOCTestComponent = withCompleteSetup<ViewModel, Props, State>(TestComponent, {
       ...instance(completeOptions),
-      filterPropDuplicates: true,
       checkEquality: deepEqual,
       createViewModel: props => (props.viewModelFactory as any)(),
     });
@@ -53,6 +52,17 @@ describe('Complete HOC should work correctly', () => {
     verify(lifecycleHooks.onConstruction!()).once();
     verify(lifecycleHooks.componentDidMount!()).once();
     verify(lifecycleHooks.componentWillUnmount!()).once();
+  });
+
+  it('Triggering updates - should filter duplicate props', () => {
+    /// Setup
+    let mounted = mount(component);
+
+    /// When
+    Numbers.range(0, 1000).forEach(() => mounted.setProps({ index: 0 }));
+
+    /// Then
+    verify(viewModel.transformState(anything())).once();
   });
 });
 
