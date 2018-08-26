@@ -12,8 +12,8 @@ export type CompleteSetupHOCOptions<VM, Props extends ViewModelHOCProps<VM>> =
  */
 export function withCompleteSetup<VM, Props extends ViewModelHOCProps<VM>, State>(
   targetComponent:
-    StatelessComponent<Props & NullableKV<State>> |
-    ComponentType<Props & NullableKV<State>>,
+    StatelessComponent<Props & Partial<NullableKV<State>>> |
+    ComponentType<Props & Partial<NullableKV<State>>>,
   options: CompleteSetupHOCOptions<VM, Props>,
 ): ComponentType<Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps> {
   // tslint:disable-next-line:variable-name

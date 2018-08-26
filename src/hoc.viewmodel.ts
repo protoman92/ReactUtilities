@@ -23,8 +23,8 @@ export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
  * @template VM View model generics.
  * @template Props Props generics.
  * @template State State generics.
- * @param {(StatelessComponent<Props & NullableKV<State>> |
- *     ComponentType<Props & NullableKV<State>>)} targetComponent
+ * @param {(StatelessComponent<Props & Partial<NullableKV<State>>> |
+ *     ComponentType<Props & Partial<NullableKV<State>>>)} targetComponent
  * The base component class that will have its view model injected. This can
  * either be a stateless component, or a class component without state.
  * @param {ViewModelHOCOptions<VM, Props>} options Set up options.
@@ -33,8 +33,8 @@ export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
  */
 export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
   targetComponent:
-    StatelessComponent<Props & NullableKV<State>> |
-    ComponentType<Props & NullableKV<State>>,
+    StatelessComponent<Props & Partial<NullableKV<State>>> |
+    ComponentType<Props & Partial<NullableKV<State>>>,
   options: ViewModelHOCOptions<VM, Props>,
 ): ComponentType<Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps> {
   type PureProps = Omit<Props, 'viewModel'>;
