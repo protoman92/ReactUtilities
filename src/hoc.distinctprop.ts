@@ -8,6 +8,7 @@ export type DistinctPropsHOCOptions<Props> = {
    * beware that some keys may be optional.
    */
   readonly propKeysForComparison?: (keyof Props)[];
+  readonly propKeysToIgnore?: (keyof Props)[];
   readonly checkEquality: (obj1: unknown, obj2: unknown) => boolean;
 };
 
@@ -22,7 +23,7 @@ export function withDistinctProps<Props>(
   targetComponent: ComponentType<Props>,
   options: DistinctPropsHOCOptions<Props>,
 ): ComponentType<Props> {
-  let { checkEquality, propKeysForComparison } = options;
+  let { checkEquality, propKeysForComparison, propKeysToIgnore } = options;
 
   return class DistinctPropWrapper extends Component<Props, never> {
     public static displayName = getComponentName(targetComponent);
@@ -37,6 +38,9 @@ export function withDistinctProps<Props>(
       } else {
         keys = Object.keys(props) as (keyof Props)[];
       }
+
+      let ignoreKeys = propKeysToIgnore || [];
+      keys = keys.filter(key => !(ignoreKeys.indexOf(key) > -1));
 
       this.shouldUpdate = (p1, p2) => {
         for (let key of keys) {
