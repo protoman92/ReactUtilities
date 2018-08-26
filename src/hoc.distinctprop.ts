@@ -3,7 +3,11 @@ import { Component, ComponentType } from 'react';
 import { getComponentName } from './util';
 
 export type DistinctPropsHOCOptions<Props> = {
-  readonly propKeysForComparison: (keyof Props)[];
+  /**
+   * If this is not specified, use all keys of the component's props, but
+   * beware that some keys may be optional.
+   */
+  readonly propKeysForComparison?: (keyof Props)[];
   readonly checkEquality: (obj1: unknown, obj2: unknown) => boolean;
 };
 
@@ -22,19 +26,33 @@ export function withDistinctProps<Props>(
 
   return class DistinctPropWrapper extends Component<Props, never> {
     public static displayName = getComponentName(targetComponent);
+    private readonly shouldUpdate: (props: Props, next: Props) => boolean;
 
-    public shouldComponentUpdate(nextProps: Props) {
-      let props = this.props;
+    public constructor(props: Props) {
+      super(props);
+      let keys: (keyof Props)[];
 
-      for (let key of propKeysForComparison) {
-        if (props[key] instanceof Function) {
-          continue;
-        } else if (!checkEquality(props[key], nextProps[key])) {
-          return true;
-        }
+      if (propKeysForComparison instanceof Array) {
+        keys = propKeysForComparison;
+      } else {
+        keys = Object.keys(props) as (keyof Props)[];
       }
 
-      return false;
+      this.shouldUpdate = (p1, p2) => {
+        for (let key of keys) {
+          if (p1[key] instanceof Function) {
+            continue;
+          } else if (!checkEquality(p1[key], p2[key])) {
+            return true;
+          }
+        }
+
+        return false;
+      };
+    }
+
+    public shouldComponentUpdate(nextProps: Props) {
+      return this.shouldUpdate(this.props, nextProps);
     }
 
     public render() {

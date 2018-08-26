@@ -10,16 +10,18 @@ describe('Distinct props HOC should work correctly', () => {
   let component: ReactElement<Props & Partial<NullableKV<State>>>;
   let viewModel: ViewModel;
 
+  // tslint:disable-next-line:variable-name
+  let HOCTestComponent;
+
   beforeEach(() => {
-    // tslint:disable-next-line:variable-name
-    let HOCTestComponent = withDistinctProps(TestComponent, {
+    HOCTestComponent = withDistinctProps(TestComponent, {
       propKeysForComparison: ['index', 'a', 'callback'],
       checkEquality: require('deep-equal'),
     });
 
     viewModel = spy(new ViewModel());
     component = <HOCTestComponent
-      index={0} callback={() => { }}
+      index={-1} callback={() => { }}
       viewModel={instance(viewModel)} />;
   });
 
@@ -46,6 +48,42 @@ describe('Distinct props HOC should work correctly', () => {
     });
 
     /// Then
-    verify(viewModel.transformState(anything())).times(times * 2);
+    verify(viewModel.transformState(anything())).times(times * 2 + 1);
+  });
+
+  it('Wrapping base component class with no specified prop keys - should use all keys', () => {
+    /// Setup
+    let times = 1000;
+
+    HOCTestComponent = withDistinctProps(TestComponent, {
+      checkEquality: require('deep-equal'),
+    });
+
+    component = <HOCTestComponent
+      index={-1} a={-1} b={-1}
+      callback={() => { }}
+      viewModel={instance(viewModel)} />;
+
+    let mounted = mount(component);
+
+    /// When
+    Numbers.range(0, times).forEach(iter => {
+      mounted.setProps({ index: iter });
+    });
+
+    Numbers.range(0, times).forEach(iter => {
+      mounted.setProps({ a: iter });
+    });
+
+    Numbers.range(0, times).forEach(iter => {
+      mounted.setProps({ b: iter });
+    });
+
+    Numbers.range(0, times).forEach(iter => {
+      mounted.setProps({ callback: () => console.log(iter) });
+    });
+
+    /// Then
+    verify(viewModel.transformState(anything())).times(times * 3 + 1);
   });
 });
