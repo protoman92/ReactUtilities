@@ -5,7 +5,7 @@ import { ComponentType } from 'react';
  * @param {ComponentType<any>} component A component instance.
  * @returns A string value.
  */
-export function getComponentName(component: ComponentType<any>) {
+export function getComponentDisplayName(component: ComponentType<any>) {
   if (component.displayName) {
     return component.displayName;
   } else {

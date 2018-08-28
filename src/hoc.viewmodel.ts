@@ -1,7 +1,7 @@
 import { NullableKV, Objects, Omit, Types } from 'javascriptutilities';
 import * as React from 'react';
 import { Component, ComponentType, StatelessComponent } from 'react';
-import { getComponentName } from './util';
+import { getComponentDisplayName } from './util';
 import { ReduxType, RootType } from './viewmodel';
 export type ViewModelHOCProps<VM> = { readonly viewModel: VM; };
 export type ViewModelFactoryHOCProps = { readonly viewModelFactory: unknown; };
@@ -42,9 +42,10 @@ export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
   type PureProps = Omit<Props, 'viewModel'>;
   type WrapperProps = PureProps & ViewModelFactoryHOCProps;
   let { createViewModel, viewModelHooks } = options;
+  let displayName = getComponentDisplayName(targetComponent);
 
   return class ViewModelWrapper extends Component<WrapperProps, State> {
-    public static displayName = getComponentName(targetComponent);
+    public static displayName = `${displayName}_ViewModelWrapper`;
 
     private readonly viewModel: VM;
 

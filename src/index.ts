@@ -11,5 +11,5 @@ export {
   ViewModelHOCHooks,
   withViewModel,
 } from './hoc.viewmodel';
-export { getComponentName } from './util';
+export { getComponentDisplayName } from './util';
 export { ReduxType as ReduxViewModel, RootType as RootViewModel } from './viewmodel';

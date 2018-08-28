@@ -1,4 +1,4 @@
-import { getComponentName } from '../src/util';
+import { getComponentDisplayName } from '../src/util';
 import { TestComponent } from './testcomponent';
 
 describe('Utility functions should work correctly', () => {
@@ -6,8 +6,8 @@ describe('Utility functions should work correctly', () => {
     /// Setup && When && Then
     let displayName = 'abc';
     TestComponent.displayName = displayName;
-    expect(getComponentName(TestComponent)).toEqual(displayName);
+    expect(getComponentDisplayName(TestComponent)).toEqual(displayName);
     TestComponent.displayName = undefined;
-    expect(getComponentName(TestComponent)).toEqual(TestComponent.name);
+    expect(getComponentDisplayName(TestComponent)).toEqual(TestComponent.name);
   });
 });

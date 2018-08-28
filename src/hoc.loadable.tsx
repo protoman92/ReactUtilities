@@ -9,6 +9,7 @@ export type LoadableHOCHooks = {
 
 export type LoadableHOCOptions<Props, Exports extends object> = {
   readonly hooks?: LoadableHOCHooks;
+  readonly displayName?: string;
 } & Options<Props, Exports>;
 
 /**
@@ -30,7 +31,10 @@ export function withLoadable<Props, Exports extends object>(
     },
   } as OptionsWithoutRender<Props>);
 
-  return Loadable(actualOptions);
+  let displayName = `${options.displayName}_LoadableWrapper`;
+  let loadableComponent = Loadable(actualOptions);
+  loadableComponent.displayName = displayName;
+  return loadableComponent;
 }
 
 /**

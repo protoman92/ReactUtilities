@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, ComponentType } from 'react';
-import { getComponentName } from './util';
+import { getComponentDisplayName } from './util';
 
 export type DistinctPropsHOCOptions<Props> = {
   /**
@@ -24,9 +24,10 @@ export function withDistinctProps<Props>(
   options: DistinctPropsHOCOptions<Props>,
 ): ComponentType<Props> {
   let { checkEquality, propKeysForComparison, propKeysToIgnore } = options;
+  let displayName = getComponentDisplayName(targetComponent);
 
   return class DistinctPropWrapper extends Component<Props, never> {
-    public static displayName = getComponentName(targetComponent);
+    public static displayName = `${displayName}_DistinctPropWrapper`;
     private readonly shouldUpdate: (props: Props, next: Props) => boolean;
 
     public constructor(props: Props) {
