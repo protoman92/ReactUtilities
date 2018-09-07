@@ -3,14 +3,15 @@ import {ComponentType} from 'react';
 import * as Loadable from 'react-loadable';
 import {Options, OptionsWithoutRender} from 'react-loadable';
 
-export type LoadableHOCHooks = {
-  readonly beforeComponentLoaded?: () => void;
-};
+export type LoadableHOCHooks = Readonly<{
+  beforeComponentLoaded?: () => void;
+}>;
 
-export type LoadableHOCOptions<Props, Exports extends object> = {
-  readonly hooks?: LoadableHOCHooks;
-  readonly displayName?: string;
-} & Options<Props, Exports>;
+export type LoadableHOCOptions<Props, Exports extends object> = Readonly<{
+  hooks?: LoadableHOCHooks;
+  displayName?: string;
+}> &
+  Options<Props, Exports>;
 
 /**
  * Convert a component to Loadable.

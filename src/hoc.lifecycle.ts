@@ -2,15 +2,15 @@ import * as React from 'react';
 import {Component, ComponentType, StatelessComponent} from 'react';
 import {getComponentDisplayName} from './util';
 
-export type LifecycleHOCHooks = {
-  readonly onConstruction?: () => void;
-  readonly componentDidMount?: () => void;
-  readonly componentWillUnmount?: () => void;
-};
+export type LifecycleHOCHooks = Readonly<{
+  onConstruction?: () => void;
+  componentDidMount?: () => void;
+  componentWillUnmount?: () => void;
+}>;
 
-export type LifecycleHooksHOCOptions = {
-  readonly lifecycleHooks: LifecycleHOCHooks;
-};
+export type LifecycleHooksHOCOptions = Readonly<{
+  lifecycleHooks: LifecycleHOCHooks;
+}>;
 
 /**
  * Set up hooks for component lifecycle.

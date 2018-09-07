@@ -2,7 +2,7 @@ import {NeverProp, Objects, Omit, Types} from 'javascriptutilities';
 import * as React from 'react';
 import {Component, ComponentType, StatelessComponent} from 'react';
 import {getComponentDisplayName} from './util';
-import {ReduxType, RootType} from './viewmodel';
+import {ReduxViewModel, RootViewModel} from './viewmodel';
 export type ViewModelHOCProps<VM> = {readonly viewModel: VM};
 export type ViewModelFactoryHOCProps = {readonly viewModelFactory: unknown};
 
@@ -10,16 +10,19 @@ export type FactorifiedViewModelHOCProps<
   Props extends ViewModelHOCProps<any>
 > = Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps;
 
-export type ViewModelHOCHooks = {
-  readonly beforeViewModelCreated?: () => void;
-};
+export type ViewModelHOCHooks = Readonly<{
+  beforeViewModelCreated?: () => void;
+}>;
 
-export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
-  readonly viewModelHooks?: ViewModelHOCHooks;
-  readonly createViewModel: (
+export type ViewModelHOCOptions<
+  VM,
+  Props extends ViewModelHOCProps<VM>
+> = Readonly<{
+  viewModelHooks?: ViewModelHOCHooks;
+  createViewModel: (
     props: Omit<Props, 'viewModel'> & ViewModelFactoryHOCProps
   ) => VM;
-};
+}>;
 
 export type TargetViewModelHOCComponent<
   VM,
@@ -69,17 +72,19 @@ export function withViewModel<VM, Props extends ViewModelHOCProps<VM>, State>(
     public componentDidMount() {
       let {viewModel} = this;
 
-      if (Types.isInstance<RootType>(viewModel, 'initialize')) {
+      if (Types.isInstance<RootViewModel>(viewModel, 'initialize')) {
         viewModel.initialize();
       }
 
-      if (Types.isInstance<ReduxType<State>>(viewModel, 'setUpStateCallback')) {
+      if (
+        Types.isInstance<ReduxViewModel<State>>(viewModel, 'setUpStateCallback')
+      ) {
         viewModel.setUpStateCallback(state => this.setState(state));
       }
     }
 
     public componentWillUnmount() {
-      if (Types.isInstance<RootType>(this.viewModel, 'deinitialize')) {
+      if (Types.isInstance<RootViewModel>(this.viewModel, 'deinitialize')) {
         this.viewModel.deinitialize();
       }
     }

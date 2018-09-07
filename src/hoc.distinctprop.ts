@@ -2,15 +2,15 @@ import * as React from 'react';
 import {Component, ComponentType} from 'react';
 import {getComponentDisplayName} from './util';
 
-export type DistinctPropsHOCOptions<Props> = {
+export type DistinctPropsHOCOptions<Props> = Readonly<{
   /**
    * If this is not specified, use all keys of the component's props, but
    * beware that some keys may be optional.
    */
-  readonly propKeysForComparison?: (keyof Props)[];
-  readonly propKeysToIgnore?: (keyof Props)[];
-  readonly checkEquality: (obj1: unknown, obj2: unknown) => boolean;
-};
+  propKeysForComparison?: (keyof Props)[];
+  propKeysToIgnore?: (keyof Props)[];
+  checkEquality: (obj1: unknown, obj2: unknown) => boolean;
+}>;
 
 /**
  * Filter out duplicate props for some keys.
