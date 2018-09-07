@@ -1,13 +1,13 @@
 import { mount } from 'enzyme';
 import { withDistinctProps } from 'hoc.distinctprop';
-import { NullableKV, Numbers } from 'javascriptutilities';
+import { NeverProp, Numbers } from 'javascriptutilities';
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { anything, instance, spy, verify } from 'ts-mockito-2';
 import { Props, State, TestComponent, ViewModel } from './testcomponent';
 
 describe('Distinct props HOC should work correctly', () => {
-  let component: ReactElement<Props & Partial<NullableKV<State>>>;
+  let component: ReactElement<Props & Partial<NeverProp<State>>>;
   let viewModel: ViewModel;
 
   // tslint:disable-next-line:variable-name

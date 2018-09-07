@@ -1,4 +1,4 @@
-import { NullableKV } from 'javascriptutilities';
+import { NeverProp } from 'javascriptutilities';
 import * as React from 'react';
 import { ReduxViewModel } from '../src';
 
@@ -10,7 +10,7 @@ export interface State {
   readonly b: number;
 }
 
-export function transformState({ a, b }: NullableKV<State>) {
+export function transformState({ a, b }: NeverProp<State>) {
   return `${a}-${b}`;
 }
 
@@ -24,7 +24,7 @@ export class ViewModel implements ReduxViewModel<State> {
   public initialize() { }
   public deinitialize() { }
   public setUpStateCallback(_callback: (state: State) => void) { }
-  public transformState(_state: Partial<NullableKV<State>>): string { return ''; }
+  public transformState(_state: Partial<NeverProp<State>>): string { return ''; }
 }
 
 export interface Props {
@@ -34,7 +34,7 @@ export interface Props {
 }
 
 // tslint:disable-next-line:variable-name
-export function TestComponent(props: Props & Partial<NullableKV<State>>) {
+export function TestComponent(props: Props & Partial<NeverProp<State>>) {
   return <div>
     <div className={indexDivClass}>{props.index}</div>
     <div className={stateDivClass}>

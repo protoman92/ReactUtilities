@@ -1,4 +1,4 @@
-import { NullableKV, Objects, Omit, Types } from 'javascriptutilities';
+import { NeverProp, Objects, Omit, Types } from 'javascriptutilities';
 import * as React from 'react';
 import { Component, ComponentType, StatelessComponent } from 'react';
 import { getComponentDisplayName } from './util';
@@ -19,8 +19,8 @@ export type ViewModelHOCOptions<VM, Props extends ViewModelHOCProps<VM>> = {
 };
 
 export type TargetViewModelHOCComponent<VM, Props extends ViewModelHOCProps<VM>, State> =
-  StatelessComponent<Props & Partial<NullableKV<State>>> |
-  ComponentType<Props & Partial<NullableKV<State>>>;
+  StatelessComponent<Props & Partial<NeverProp<State>>> |
+  ComponentType<Props & Partial<NeverProp<State>>>;
 
 /**
  * This HOC method takes away most of the boilerplate for setting up a component
