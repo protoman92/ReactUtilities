@@ -1,9 +1,13 @@
-import { mount } from 'enzyme';
-import { LifecycleHOCHooks, LifecycleHooksHOCOptions, withLifecycleHooks } from 'hoc.lifecycle';
+import {mount} from 'enzyme';
+import {
+  LifecycleHOCHooks,
+  LifecycleHooksHOCOptions,
+  withLifecycleHooks,
+} from 'hoc.lifecycle';
 import * as React from 'react';
-import { ReactElement } from 'react';
-import { instance, spy, verify } from 'ts-mockito-2';
-import { Props, TestComponent, ViewModel } from './testcomponent';
+import {ReactElement} from 'react';
+import {instance, spy, verify} from 'ts-mockito-2';
+import {Props, TestComponent, ViewModel} from './testcomponent';
 
 describe('Lifecycle hooks HOC should work correctly', () => {
   let lifecycleHooks: LifecycleHOCHooks;
@@ -13,9 +17,9 @@ describe('Lifecycle hooks HOC should work correctly', () => {
 
   beforeEach(() => {
     lifecycleHooks = spy({
-      onConstruction: () => { },
-      componentDidMount: () => { },
-      componentWillUnmount: () => { },
+      onConstruction: () => {},
+      componentDidMount: () => {},
+      componentWillUnmount: () => {},
     });
 
     lifecycleOptions = spy({
@@ -29,8 +33,7 @@ describe('Lifecycle hooks HOC should work correctly', () => {
 
     viewModel = spy(new ViewModel());
 
-    component = <HOCTestComponent index={0}
-      viewModel={instance(viewModel)} />;
+    component = <HOCTestComponent index={0} viewModel={instance(viewModel)} />;
   });
 
   it('Wrapping base component class with lifecycle wrapper - should work', () => {

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Component, ComponentType } from 'react';
-import { getComponentDisplayName } from './util';
+import {Component, ComponentType} from 'react';
+import {getComponentDisplayName} from './util';
 
 export type DistinctPropsHOCOptions<Props> = {
   /**
@@ -21,9 +21,9 @@ export type DistinctPropsHOCOptions<Props> = {
  */
 export function withDistinctProps<Props>(
   targetComponent: ComponentType<Props>,
-  options: DistinctPropsHOCOptions<Props>,
+  options: DistinctPropsHOCOptions<Props>
 ): ComponentType<Props> {
-  let { checkEquality, propKeysForComparison, propKeysToIgnore } = options;
+  let {checkEquality, propKeysForComparison, propKeysToIgnore} = options;
   let displayName = getComponentDisplayName(targetComponent);
 
   return class DistinctPropWrapper extends Component<Props, never> {

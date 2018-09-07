@@ -1,10 +1,10 @@
-import { mount } from 'enzyme';
-import { withDistinctProps } from 'hoc.distinctprop';
-import { NeverProp, Numbers } from 'javascriptutilities';
+import {mount} from 'enzyme';
+import {withDistinctProps} from 'hoc.distinctprop';
+import {NeverProp, Numbers} from 'javascriptutilities';
 import * as React from 'react';
-import { ReactElement } from 'react';
-import { anything, instance, spy, verify } from 'ts-mockito-2';
-import { Props, State, TestComponent, ViewModel } from './testcomponent';
+import {ReactElement} from 'react';
+import {anything, instance, spy, verify} from 'ts-mockito-2';
+import {Props, State, TestComponent, ViewModel} from './testcomponent';
 
 describe('Distinct props HOC should work correctly', () => {
   let component: ReactElement<Props & Partial<NeverProp<State>>>;
@@ -20,9 +20,13 @@ describe('Distinct props HOC should work correctly', () => {
     });
 
     viewModel = spy(new ViewModel());
-    component = <HOCTestComponent
-      index={-1} callback={() => { }}
-      viewModel={instance(viewModel)} />;
+    component = (
+      <HOCTestComponent
+        index={-1}
+        callback={() => {}}
+        viewModel={instance(viewModel)}
+      />
+    );
   });
 
   it('Wrapping base component class with distinct prop wrapper - should work', () => {
@@ -31,12 +35,12 @@ describe('Distinct props HOC should work correctly', () => {
     let mounted = mount(component);
 
     /// When
-    Numbers.range(0, times).forEach(iter => mounted.setProps({ index: iter }));
-    Numbers.range(0, times).forEach(iter => mounted.setProps({ a: iter }));
-    Numbers.range(0, times).forEach(iter => mounted.setProps({ b: iter }));
+    Numbers.range(0, times).forEach(iter => mounted.setProps({index: iter}));
+    Numbers.range(0, times).forEach(iter => mounted.setProps({a: iter}));
+    Numbers.range(0, times).forEach(iter => mounted.setProps({b: iter}));
 
     Numbers.range(0, times).forEach(iter => {
-      mounted.setProps({ callback: () => console.log(iter) });
+      mounted.setProps({callback: () => console.log(iter)});
     });
 
     /// Then
@@ -51,20 +55,25 @@ describe('Distinct props HOC should work correctly', () => {
       checkEquality: require('deep-equal'),
     });
 
-    component = <HOCTestComponent
-      index={-1} a={-1} b={-1}
-      callback={() => { }}
-      viewModel={instance(viewModel)} />;
+    component = (
+      <HOCTestComponent
+        index={-1}
+        a={-1}
+        b={-1}
+        callback={() => {}}
+        viewModel={instance(viewModel)}
+      />
+    );
 
     let mounted = mount(component);
 
     /// When
-    Numbers.range(0, times).forEach(iter => mounted.setProps({ index: iter }));
-    Numbers.range(0, times).forEach(iter => mounted.setProps({ a: iter }));
-    Numbers.range(0, times).forEach(iter => mounted.setProps({ b: iter }));
+    Numbers.range(0, times).forEach(iter => mounted.setProps({index: iter}));
+    Numbers.range(0, times).forEach(iter => mounted.setProps({a: iter}));
+    Numbers.range(0, times).forEach(iter => mounted.setProps({b: iter}));
 
     Numbers.range(0, times).forEach(iter => {
-      mounted.setProps({ callback: () => console.log(iter) });
+      mounted.setProps({callback: () => console.log(iter)});
     });
 
     /// Then
@@ -81,17 +90,22 @@ describe('Distinct props HOC should work correctly', () => {
       checkEquality: require('deep-equal'),
     });
 
-    component = <HOCTestComponent
-      index={-1} a={-1} b={-1}
-      callback={() => { }}
-      viewModel={instance(viewModel)} />;
+    component = (
+      <HOCTestComponent
+        index={-1}
+        a={-1}
+        b={-1}
+        callback={() => {}}
+        viewModel={instance(viewModel)}
+      />
+    );
 
     let mounted = mount(component);
 
     /// When
-    Numbers.range(0, times).forEach(iter => mounted.setProps({ index: iter }));
-    Numbers.range(0, times).forEach(iter => mounted.setProps({ a: iter }));
-    Numbers.range(0, times).forEach(iter => mounted.setProps({ b: iter }));
+    Numbers.range(0, times).forEach(iter => mounted.setProps({index: iter}));
+    Numbers.range(0, times).forEach(iter => mounted.setProps({a: iter}));
+    Numbers.range(0, times).forEach(iter => mounted.setProps({b: iter}));
 
     /// Then
     verify(viewModel.transformState(anything())).times(times * 2 + 1);

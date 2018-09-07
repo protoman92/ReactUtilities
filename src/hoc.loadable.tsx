@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ComponentType } from 'react';
+import {ComponentType} from 'react';
 import * as Loadable from 'react-loadable';
-import { Options, OptionsWithoutRender } from 'react-loadable';
+import {Options, OptionsWithoutRender} from 'react-loadable';
 
 export type LoadableHOCHooks = {
   readonly beforeComponentLoaded?: () => void;
@@ -20,7 +20,8 @@ export type LoadableHOCOptions<Props, Exports extends object> = {
  * @returns {ComponentType<Props>} ComponentType instance.
  */
 export function withLoadable<Props, Exports extends object>(
-  options: LoadableHOCOptions<Props, Exports>): ComponentType<Props> {
+  options: LoadableHOCOptions<Props, Exports>
+): ComponentType<Props> {
   let actualOptions: Options<Props, Exports> = Object.assign({}, options, {
     loader: () => {
       if (options.hooks && options.hooks.beforeComponentLoaded) {
@@ -46,7 +47,8 @@ export function withLoadable<Props, Exports extends object>(
  * @returns {ComponentType<Props>} ComponentType instance.
  */
 export function withTestLoadable<Props, Exports extends object>(
-  options: LoadableHOCOptions<Props, Exports>): ComponentType<Props> {
+  options: LoadableHOCOptions<Props, Exports>
+): ComponentType<Props> {
   if (options.hooks && options.hooks.beforeComponentLoaded) {
     options.hooks.beforeComponentLoaded();
   }

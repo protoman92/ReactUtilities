@@ -1,11 +1,19 @@
-import { mount } from 'enzyme';
-import { Numbers } from 'javascriptutilities';
+import {mount} from 'enzyme';
+import {Numbers} from 'javascriptutilities';
 import * as React from 'react';
-import { ReactElement } from 'react';
-import { Subject } from 'rxjs';
-import { anything, instance, spy, verify, when } from 'ts-mockito-2';
-import { ViewModelHOCHooks, withViewModel } from '../src/hoc.viewmodel';
-import { indexDivClass, Props, State, stateDivClass, TestComponent, transformState, ViewModel } from './testcomponent';
+import {ReactElement} from 'react';
+import {Subject} from 'rxjs';
+import {anything, instance, spy, verify, when} from 'ts-mockito-2';
+import {ViewModelHOCHooks, withViewModel} from '../src/hoc.viewmodel';
+import {
+  indexDivClass,
+  Props,
+  State,
+  stateDivClass,
+  TestComponent,
+  transformState,
+  ViewModel,
+} from './testcomponent';
 
 describe('View model HOC should work correctly', () => {
   let viewModelHooks: ViewModelHOCHooks;
@@ -15,22 +23,28 @@ describe('View model HOC should work correctly', () => {
 
   beforeEach(() => {
     viewModelHooks = spy({
-      beforeViewModelCreated: () => { },
+      beforeViewModelCreated: () => {},
     });
 
     // tslint:disable-next-line:variable-name
-    let HOCTestComponent = withViewModel<ViewModel, Props, State>(TestComponent, {
-      viewModelHooks: instance(viewModelHooks),
-      createViewModel: props => (props.viewModelFactory as any)(),
-    });
+    let HOCTestComponent = withViewModel<ViewModel, Props, State>(
+      TestComponent,
+      {
+        viewModelHooks: instance(viewModelHooks),
+        createViewModel: props => (props.viewModelFactory as any)(),
+      }
+    );
 
     ViewModel.instance = -1;
     componentIndex = 1000;
     viewModel = spy(new ViewModel());
 
-    component = <HOCTestComponent
-      index={componentIndex}
-      viewModelFactory={() => instance(viewModel)} />;
+    component = (
+      <HOCTestComponent
+        index={componentIndex}
+        viewModelFactory={() => instance(viewModel)}
+      />
+    );
   });
 
   it('Wrapping base component class with view model wrapper - should work', () => {
@@ -86,7 +100,7 @@ describe('View model HOC should work correctly', () => {
 
     /// When
     Numbers.range(0, times).forEach(index => {
-      mounted.setProps({ index });
+      mounted.setProps({index});
     });
 
     /// Then

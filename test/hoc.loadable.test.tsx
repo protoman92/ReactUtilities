@@ -1,9 +1,14 @@
-import { mount } from 'enzyme';
-import { LoadableHOCOptions, LoadableHOCHooks, withLoadable, withTestLoadable } from 'hoc.loadable';
+import {mount} from 'enzyme';
+import {
+  LoadableHOCOptions,
+  LoadableHOCHooks,
+  withLoadable,
+  withTestLoadable,
+} from 'hoc.loadable';
 import * as React from 'react';
-import { ReactElement } from 'react';
-import { instance, spy, verify } from 'ts-mockito-2';
-import { Props, ViewModel } from './testcomponent';
+import {ReactElement} from 'react';
+import {instance, spy, verify} from 'ts-mockito-2';
+import {Props, ViewModel} from './testcomponent';
 
 describe('Lifecycle hooks HOC should work correctly', () => {
   let loadableHooks: LoadableHOCHooks;
@@ -13,7 +18,7 @@ describe('Lifecycle hooks HOC should work correctly', () => {
 
   beforeEach(() => {
     loadableHooks = spy({
-      beforeComponentLoaded: () => { },
+      beforeComponentLoaded: () => {},
     });
 
     loadableOptions = spy({
@@ -30,21 +35,24 @@ describe('Lifecycle hooks HOC should work correctly', () => {
 
     viewModel = spy(new ViewModel());
 
-    component = <HOCTestComponent index={0}
-      viewModel={instance(viewModel)} />;
+    component = <HOCTestComponent index={0} viewModel={instance(viewModel)} />;
   });
 
-  it('Wrapping base component class with lifecycle wrapper - should work', done => {
-    /// Setup
-    let mounted = mount(component);
+  it(
+    'Wrapping base component class with lifecycle wrapper - should work',
+    done => {
+      /// Setup
+      let mounted = mount(component);
 
-    /// When && Then
-    setTimeout(() => {
-      verify(loadableHooks.beforeComponentLoaded!()).once();
-      mounted.unmount();
-      done();
-    }, 500);
-  }, 1000);
+      /// When && Then
+      setTimeout(() => {
+        verify(loadableHooks.beforeComponentLoaded!()).once();
+        mounted.unmount();
+        done();
+      }, 500);
+    },
+    1000
+  );
 });
 
 describe('Test lifecycle hooks HOC should work correctly', () => {
@@ -55,7 +63,7 @@ describe('Test lifecycle hooks HOC should work correctly', () => {
 
   beforeEach(() => {
     loadableHooks = spy({
-      beforeComponentLoaded: () => { },
+      beforeComponentLoaded: () => {},
     });
 
     loadableOptions = spy({
@@ -72,8 +80,7 @@ describe('Test lifecycle hooks HOC should work correctly', () => {
 
     viewModel = spy(new ViewModel());
 
-    component = <HOCTestComponent index={0}
-      viewModel={instance(viewModel)} />;
+    component = <HOCTestComponent index={0} viewModel={instance(viewModel)} />;
   });
 
   it('Wrapping base component class with lifecycle wrapper - should work', () => {

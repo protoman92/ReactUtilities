@@ -1,4 +1,4 @@
-import { ComponentType } from 'react';
+import {ComponentType} from 'react';
 
 /**
  * Get the name of a React component.

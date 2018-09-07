@@ -1,5 +1,5 @@
-import { getComponentDisplayName } from '../src/util';
-import { TestComponent } from './testcomponent';
+import {getComponentDisplayName} from '../src/util';
+import {TestComponent} from './testcomponent';
 
 describe('Utility functions should work correctly', () => {
   it('Getting component name should work correctly', () => {
