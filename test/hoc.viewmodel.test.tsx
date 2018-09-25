@@ -22,7 +22,7 @@ describe('View model HOC should work correctly', () => {
   let viewModel: ViewModel;
 
   beforeEach(() => {
-    viewModelHooks = spy({
+    viewModelHooks = spy<ViewModelHOCHooks>({
       beforeViewModelCreated: () => {},
     });
 
@@ -37,7 +37,7 @@ describe('View model HOC should work correctly', () => {
 
     ViewModel.instance = -1;
     componentIndex = 1000;
-    viewModel = spy(new ViewModel());
+    viewModel = spy<ViewModel>(new ViewModel());
 
     component = (
       <HOCTestComponent

@@ -24,7 +24,8 @@ describe('Distinct props HOC should work correctly', () => {
       checkEquality: require('deep-equal'),
     });
 
-    viewModel = spy(new ViewModel());
+    viewModel = spy<ViewModel>(new ViewModel());
+
     component = (
       <HOCTestComponent
         index={-1}

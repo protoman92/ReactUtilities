@@ -26,7 +26,7 @@ describe('Complete HOC should work correctly', () => {
   beforeEach(() => {
     viewModel = mock(ViewModel);
 
-    lifecycleHooks = spy({
+    lifecycleHooks = spy<LifecycleHOCHooks>({
       onConstruction: () => {},
       componentDidMount: () => {},
       componentWillUnmount: () => {},

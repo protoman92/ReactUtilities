@@ -20,13 +20,13 @@ describe('Lifecycle hooks HOC should work correctly', () => {
   let viewModel: ViewModel;
 
   beforeEach(() => {
-    lifecycleHooks = spy({
+    lifecycleHooks = spy<LifecycleHOCHooks>({
       onConstruction: () => {},
       componentDidMount: () => {},
       componentWillUnmount: () => {},
     });
 
-    lifecycleOptions = spy({
+    lifecycleOptions = spy<LifecycleHooksHOCOptions>({
       lifecycleHooks: instance(lifecycleHooks),
     });
 
@@ -35,8 +35,7 @@ describe('Lifecycle hooks HOC should work correctly', () => {
       ...instance(lifecycleOptions),
     });
 
-    viewModel = spy(new ViewModel());
-
+    viewModel = spy<ViewModel>(new ViewModel());
     component = <HOCTestComponent index={0} viewModel={instance(viewModel)} />;
   });
 

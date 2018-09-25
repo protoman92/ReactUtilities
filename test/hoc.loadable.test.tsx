@@ -17,11 +17,11 @@ describe('Lifecycle hooks HOC should work correctly', () => {
   let viewModel: ViewModel;
 
   beforeEach(() => {
-    loadableHooks = spy({
+    loadableHooks = spy<LoadableHOCHooks>({
       beforeComponentLoaded: () => {},
     });
 
-    loadableOptions = spy({
+    loadableOptions = spy<LoadableHOCOptions<ViewModelProps, {}>>({
       hooks: instance(loadableHooks),
       loader: () =>
         import('./testcomponent').then(comp => comp.ViewModelTestComponent),
@@ -34,8 +34,7 @@ describe('Lifecycle hooks HOC should work correctly', () => {
       ...instance(loadableOptions),
     });
 
-    viewModel = spy(new ViewModel());
-
+    viewModel = spy<ViewModel>(new ViewModel());
     component = <HOCTestComponent index={0} viewModel={instance(viewModel)} />;
   });
 
@@ -63,11 +62,11 @@ describe('Test lifecycle hooks HOC should work correctly', () => {
   let viewModel: ViewModel;
 
   beforeEach(() => {
-    loadableHooks = spy({
+    loadableHooks = spy<LoadableHOCHooks>({
       beforeComponentLoaded: () => {},
     });
 
-    loadableOptions = spy({
+    loadableOptions = spy<LoadableHOCOptions<ViewModelProps, {}>>({
       hooks: instance(loadableHooks),
       loader: () =>
         import('./testcomponent').then(comp => comp.ViewModelTestComponent),
@@ -80,8 +79,7 @@ describe('Test lifecycle hooks HOC should work correctly', () => {
       ...instance(loadableOptions),
     });
 
-    viewModel = spy(new ViewModel());
-
+    viewModel = spy<ViewModel>(new ViewModel());
     component = <HOCTestComponent index={0} viewModel={instance(viewModel)} />;
   });
 
