@@ -1,18 +1,21 @@
 import {NeverProp} from 'javascriptutilities';
 import * as React from 'react';
+import {Observable} from 'rxjs';
 import {ReduxViewModel} from '../src';
-
 export let indexDivClass = 'index-div';
 export let stateDivClass = 'state-div';
 
-export interface State {
-  readonly a: number;
-  readonly b: number;
-}
+export type State = Readonly<{a: number; b: number}>;
 
 export function transformState({a, b}: NeverProp<State>) {
   return `${a}-${b}`;
 }
+
+export type Dependency = Readonly<{
+  performCleanUp: () => void;
+  stateStream: Observable<State>;
+  transformState: (state: Partial<NeverProp<State>>) => string;
+}>;
 
 export class ViewModel implements ReduxViewModel<State> {
   public static instance: number;
@@ -30,6 +33,7 @@ export class ViewModel implements ReduxViewModel<State> {
 }
 
 export type BaseProps = Readonly<{index: number; callback?: () => void}>;
+export type DependencyProps = BaseProps & Readonly<{dependency: Dependency}>;
 
 export type ViewModelProps = BaseProps &
   Readonly<{
@@ -45,6 +49,17 @@ export function BaseTestComponent({
       <div className={indexDivClass}>{index}</div>
       <div className={stateDivClass}>{value}</div>
     </div>
+  );
+}
+
+export function DependencyTestComponent(
+  props: DependencyProps & Partial<NeverProp<State>>
+) {
+  return (
+    <BaseTestComponent
+      {...props}
+      value={props.dependency.transformState(props)}
+    />
   );
 }
 
