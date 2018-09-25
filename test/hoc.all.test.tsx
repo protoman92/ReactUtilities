@@ -9,13 +9,18 @@ import {Numbers} from 'javascriptutilities';
 import * as React from 'react';
 import {ReactElement} from 'react';
 import {anything, instance, mock, spy, verify} from 'ts-mockito-2';
-import {Props, State, TestComponent, ViewModel} from './testcomponent';
+import {
+  State,
+  ViewModel,
+  ViewModelProps,
+  ViewModelTestComponent,
+} from './testcomponent';
 let deepEqual = require('deep-equal');
 
 describe('Complete HOC should work correctly', () => {
   let lifecycleHooks: LifecycleHOCHooks;
-  let completeOptions: CompleteSetupHOCOptions<ViewModel, Props>;
-  let component: ReactElement<Props>;
+  let completeOptions: CompleteSetupHOCOptions<ViewModel, ViewModelProps>;
+  let component: ReactElement<ViewModelProps>;
   let viewModel: ViewModel;
 
   beforeEach(() => {
@@ -27,15 +32,15 @@ describe('Complete HOC should work correctly', () => {
       componentWillUnmount: () => {},
     });
 
-    completeOptions = spy<CompleteSetupHOCOptions<ViewModel, Props>>({
+    completeOptions = spy<CompleteSetupHOCOptions<ViewModel, ViewModelProps>>({
       lifecycleHooks: instance(lifecycleHooks),
       checkEquality: deepEqual,
       createViewModel: props => (props.viewModelFactory as any)(),
     });
 
     // tslint:disable-next-line:variable-name
-    let HOCTestComponent = withCompleteSetup<ViewModel, Props, State>(
-      TestComponent,
+    let HOCTestComponent = withCompleteSetup<ViewModel, ViewModelProps, State>(
+      ViewModelTestComponent,
       {
         ...instance(completeOptions),
         checkEquality: deepEqual,
@@ -78,17 +83,18 @@ describe('Complete HOC should work correctly', () => {
 });
 
 describe('Test complete HOC should work correctly', () => {
-  let component: ReactElement<Props>;
+  let component: ReactElement<ViewModelProps>;
   let viewModel: ViewModel;
 
   beforeEach(() => {
     viewModel = mock(ViewModel);
 
     // tslint:disable-next-line:variable-name
-    let HOCTestComponent = withTestCompleteSetup<ViewModel, Props, State>(
-      TestComponent,
-      {} as any
-    );
+    let HOCTestComponent = withTestCompleteSetup<
+      ViewModel,
+      ViewModelProps,
+      State
+    >(ViewModelTestComponent, {} as any);
 
     component = (
       <HOCTestComponent
@@ -103,7 +109,7 @@ describe('Test complete HOC should work correctly', () => {
     let shallowed = shallow(component);
 
     /// When && Then
-    expect(shallowed.find(TestComponent)).toHaveLength(1);
+    expect(shallowed.find(ViewModelTestComponent)).toHaveLength(1);
     shallowed.unmount();
   });
 });

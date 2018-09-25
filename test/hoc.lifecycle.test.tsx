@@ -7,12 +7,16 @@ import {
 import * as React from 'react';
 import {ReactElement} from 'react';
 import {instance, spy, verify} from 'ts-mockito-2';
-import {Props, TestComponent, ViewModel} from './testcomponent';
+import {
+  ViewModel,
+  ViewModelProps,
+  ViewModelTestComponent,
+} from './testcomponent';
 
 describe('Lifecycle hooks HOC should work correctly', () => {
   let lifecycleHooks: LifecycleHOCHooks;
   let lifecycleOptions: LifecycleHooksHOCOptions;
-  let component: ReactElement<Props>;
+  let component: ReactElement<ViewModelProps>;
   let viewModel: ViewModel;
 
   beforeEach(() => {
@@ -27,7 +31,7 @@ describe('Lifecycle hooks HOC should work correctly', () => {
     });
 
     // tslint:disable-next-line:variable-name
-    let HOCTestComponent = withLifecycleHooks(TestComponent, {
+    let HOCTestComponent = withLifecycleHooks(ViewModelTestComponent, {
       ...instance(lifecycleOptions),
     });
 

@@ -29,20 +29,32 @@ export class ViewModel implements ReduxViewModel<State> {
   }
 }
 
-export interface Props {
-  readonly index: number;
-  readonly callback?: () => void;
-  readonly viewModel: ViewModel;
-}
+export type BaseProps = Readonly<{index: number; callback?: () => void}>;
 
-// tslint:disable-next-line:variable-name
-export function TestComponent(props: Props & Partial<NeverProp<State>>) {
+export type ViewModelProps = BaseProps &
+  Readonly<{
+    viewModel: ViewModel;
+  }>;
+
+export function BaseTestComponent({
+  index,
+  value,
+}: BaseProps & Readonly<{value: string}>) {
   return (
     <div>
-      <div className={indexDivClass}>{props.index}</div>
-      <div className={stateDivClass}>
-        {props.viewModel.transformState(props)}
-      </div>
+      <div className={indexDivClass}>{index}</div>
+      <div className={stateDivClass}>{value}</div>
     </div>
+  );
+}
+
+export function ViewModelTestComponent(
+  props: ViewModelProps & Partial<NeverProp<State>>
+) {
+  return (
+    <BaseTestComponent
+      {...props}
+      value={props.viewModel.transformState(props)}
+    />
   );
 }

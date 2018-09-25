@@ -1,19 +1,19 @@
 import {mount} from 'enzyme';
 import {
-  LoadableHOCOptions,
   LoadableHOCHooks,
+  LoadableHOCOptions,
   withLoadable,
   withTestLoadable,
 } from 'hoc.loadable';
 import * as React from 'react';
 import {ReactElement} from 'react';
 import {instance, spy, verify} from 'ts-mockito-2';
-import {Props, ViewModel} from './testcomponent';
+import {ViewModel, ViewModelProps} from './testcomponent';
 
 describe('Lifecycle hooks HOC should work correctly', () => {
   let loadableHooks: LoadableHOCHooks;
-  let loadableOptions: LoadableHOCOptions<Props, {}>;
-  let component: ReactElement<Props>;
+  let loadableOptions: LoadableHOCOptions<ViewModelProps, {}>;
+  let component: ReactElement<ViewModelProps>;
   let viewModel: ViewModel;
 
   beforeEach(() => {
@@ -23,7 +23,8 @@ describe('Lifecycle hooks HOC should work correctly', () => {
 
     loadableOptions = spy({
       hooks: instance(loadableHooks),
-      loader: () => import('./testcomponent').then(comp => comp.TestComponent),
+      loader: () =>
+        import('./testcomponent').then(comp => comp.ViewModelTestComponent),
       // tslint:disable-next-line:no-null-keyword
       loading: () => null,
     });
@@ -57,8 +58,8 @@ describe('Lifecycle hooks HOC should work correctly', () => {
 
 describe('Test lifecycle hooks HOC should work correctly', () => {
   let loadableHooks: LoadableHOCHooks;
-  let loadableOptions: LoadableHOCOptions<Props, {}>;
-  let component: ReactElement<Props>;
+  let loadableOptions: LoadableHOCOptions<ViewModelProps, {}>;
+  let component: ReactElement<ViewModelProps>;
   let viewModel: ViewModel;
 
   beforeEach(() => {
@@ -68,7 +69,8 @@ describe('Test lifecycle hooks HOC should work correctly', () => {
 
     loadableOptions = spy({
       hooks: instance(loadableHooks),
-      loader: () => import('./testcomponent').then(comp => comp.TestComponent),
+      loader: () =>
+        import('./testcomponent').then(comp => comp.ViewModelTestComponent),
       // tslint:disable-next-line:no-null-keyword
       loading: () => null,
     });

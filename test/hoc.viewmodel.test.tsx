@@ -7,17 +7,17 @@ import {anything, instance, spy, verify, when} from 'ts-mockito-2';
 import {ViewModelHOCHooks, withViewModel} from '../src/hoc.viewmodel';
 import {
   indexDivClass,
-  Props,
   State,
   stateDivClass,
-  TestComponent,
   transformState,
   ViewModel,
+  ViewModelProps,
+  ViewModelTestComponent,
 } from './testcomponent';
 
 describe('View model HOC should work correctly', () => {
   let viewModelHooks: ViewModelHOCHooks;
-  let component: ReactElement<Props>;
+  let component: ReactElement<ViewModelProps>;
   let componentIndex: number;
   let viewModel: ViewModel;
 
@@ -27,8 +27,8 @@ describe('View model HOC should work correctly', () => {
     });
 
     // tslint:disable-next-line:variable-name
-    let HOCTestComponent = withViewModel<ViewModel, Props, State>(
-      TestComponent,
+    let HOCTestComponent = withViewModel<ViewModel, ViewModelProps, State>(
+      ViewModelTestComponent,
       {
         viewModelHooks: instance(viewModelHooks),
         createViewModel: props => (props.viewModelFactory as any)(),

@@ -4,17 +4,22 @@ import {NeverProp, Numbers} from 'javascriptutilities';
 import * as React from 'react';
 import {ReactElement} from 'react';
 import {anything, instance, spy, verify} from 'ts-mockito-2';
-import {Props, State, TestComponent, ViewModel} from './testcomponent';
+import {
+  State,
+  ViewModel,
+  ViewModelProps,
+  ViewModelTestComponent,
+} from './testcomponent';
 
 describe('Distinct props HOC should work correctly', () => {
-  let component: ReactElement<Props & Partial<NeverProp<State>>>;
+  let component: ReactElement<ViewModelProps & Partial<NeverProp<State>>>;
   let viewModel: ViewModel;
 
   // tslint:disable-next-line:variable-name
   let HOCTestComponent;
 
   beforeEach(() => {
-    HOCTestComponent = withDistinctProps(TestComponent, {
+    HOCTestComponent = withDistinctProps(ViewModelTestComponent, {
       propKeysForComparison: ['index', 'a', 'callback'],
       checkEquality: require('deep-equal'),
     });
@@ -51,7 +56,7 @@ describe('Distinct props HOC should work correctly', () => {
     /// Setup
     let times = 1000;
 
-    HOCTestComponent = withDistinctProps(TestComponent, {
+    HOCTestComponent = withDistinctProps(ViewModelTestComponent, {
       checkEquality: require('deep-equal'),
     });
 
@@ -84,7 +89,7 @@ describe('Distinct props HOC should work correctly', () => {
     /// Setup
     let times = 1000;
 
-    HOCTestComponent = withDistinctProps(TestComponent, {
+    HOCTestComponent = withDistinctProps(ViewModelTestComponent, {
       propKeysForComparison: ['a', 'b', 'index'],
       propKeysToIgnore: ['b'],
       checkEquality: require('deep-equal'),
