@@ -1,4 +1,5 @@
 export * from './hoc.all';
+export * from './hoc.dependency';
 export * from './hoc.distinctprop';
 export * from './hoc.lifecycle';
 export * from './hoc.loadable';
