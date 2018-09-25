@@ -74,6 +74,7 @@ export function withDependency<
         let dependency = createDependency(props);
         this.dependency = dependency;
 
+        /* istanbul ignore else  */
         if (dependency.stateStream) {
           this.subscription = new Subscription();
         }
@@ -82,6 +83,7 @@ export function withDependency<
       public componentDidMount() {
         let {dependency, subscription} = this;
 
+        /* istanbul ignore else  */
         if (dependency.stateStream && subscription) {
           subscription.add(
             dependency.stateStream.subscribe(s => this.setState(s))
@@ -90,10 +92,12 @@ export function withDependency<
       }
 
       public componentWillUnmount() {
+        /* istanbul ignore else  */
         if (this.dependency.performCleanUp) {
           this.dependency.performCleanUp();
         }
 
+        /* istanbul ignore else  */
         if (this.subscription) {
           this.subscription.unsubscribe();
         }

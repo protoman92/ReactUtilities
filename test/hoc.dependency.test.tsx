@@ -4,7 +4,7 @@ import * as React from 'react';
 import {ReactElement} from 'react';
 import {NEVER, Subject} from 'rxjs';
 import {anything, instance, spy, verify, when} from 'ts-mockito-2';
-import {DependencyHOCHooks, withDependency} from '../src/hoc.dependency';
+import {DependencyHOCHooks, withDependency} from 'hoc.dependency';
 import {
   Dependency,
   DependencyProps,

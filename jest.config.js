@@ -7,6 +7,7 @@ module.exports = {
   setupTestFrameworkScriptFile: './test/setup.ts',
   testRegex: '/test/.*.(test|spec)\\.tsx?$',
   collectCoverage: true,
+  collectCoverageFrom: ['src/**/*', '!src/**/index*', '!test/**/*'],
   modulePaths: ['src'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transformIgnorePatterns: ['node_modules'],

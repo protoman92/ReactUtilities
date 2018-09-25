@@ -4,7 +4,7 @@ import * as React from 'react';
 import {ReactElement} from 'react';
 import {Subject} from 'rxjs';
 import {anything, instance, spy, verify, when} from 'ts-mockito-2';
-import {ViewModelHOCHooks, withViewModel} from '../src/hoc.viewmodel';
+import {ViewModelHOCHooks, withViewModel} from 'hoc.viewmodel';
 import {
   indexDivClass,
   State,
