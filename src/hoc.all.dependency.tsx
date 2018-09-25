@@ -25,7 +25,7 @@ export function withCompleteDependencySetup<
   Dependency extends BasicDependency<State>,
   Props extends DependencyHOCProps<Dependency>
 >(
-  targetComponent: TargetDependencyHOCComponent<Dependency, Props, State>,
+  targetComponent: TargetDependencyHOCComponent<State, Dependency, Props>,
   options: CompleteDependencySetupHOCOptions<Dependency, Props>
 ): ComponentType<FactorifiedDependencyHOCProps<Props>> {
   // tslint:disable-next-line:variable-name
@@ -41,7 +41,9 @@ export function withCompleteDependencySetup<
   let ignoreKeys: (keyof FactorifiedDependencyHOCProps<Props>)[] = [
     'dependencyFactory',
   ];
-  let distinctOps = Object.assign({}, options, {[ignorePropsKey]: ignoreKeys});
+  let distinctOps = Object.assign({}, options, {
+    [ignorePropsKey]: ignoreKeys,
+  });
 
   // tslint:disable-next-line:variable-name
   let DistinctPropWrapped = withDistinctProps(DependencyWrapped, distinctOps);

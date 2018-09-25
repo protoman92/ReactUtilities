@@ -29,9 +29,9 @@ export type DependencyHOCOptions<
 }>;
 
 export type TargetDependencyHOCComponent<
-  Depn,
-  Props extends DependencyHOCProps<Depn>,
-  State
+  State,
+  Dependency extends BasicDependency<State>,
+  Props extends DependencyHOCProps<Dependency>
 > =
   | StatelessComponent<Props & Partial<NeverProp<State>>>
   | ComponentType<Props & Partial<NeverProp<State>>>;
@@ -49,7 +49,7 @@ export function withDependency<
   Dependency extends BasicDependency<State>,
   Props extends DependencyHOCProps<Dependency>
 >(
-  targetComponent: TargetDependencyHOCComponent<Dependency, Props, State>,
+  targetComponent: TargetDependencyHOCComponent<State, Dependency, Props>,
   options: DependencyHOCOptions<Dependency, Props>
 ): ComponentType<FactorifiedDependencyHOCProps<Props>> {
   type PureProps = Omit<Props, 'dependency'>;
