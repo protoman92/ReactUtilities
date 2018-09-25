@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {ComponentType} from 'react';
 import {DistinctPropsHOCOptions, withDistinctProps} from './hoc.distinctprop';
 import {LifecycleHooksHOCOptions, withLifecycleHooks} from './hoc.lifecycle';
@@ -10,7 +9,7 @@ import {
   withViewModel,
 } from './hoc.viewmodel';
 
-export type CompleteSetupHOCOptions<
+export type CompleteViewModelSetupHOCOptions<
   VM,
   Props extends ViewModelHOCProps<VM>
 > = DistinctPropsHOCOptions<FactorifiedViewModelHOCProps<Props>> &
@@ -20,13 +19,13 @@ export type CompleteSetupHOCOptions<
 /**
  * Complete set up for a view model-based component.
  */
-export function withCompleteSetup<
+export function withCompleteViewModelSetup<
   VM,
   Props extends ViewModelHOCProps<VM>,
   State
 >(
   targetComponent: TargetViewModelHOCComponent<VM, Props, State>,
-  options: CompleteSetupHOCOptions<VM, Props>
+  options: CompleteViewModelSetupHOCOptions<VM, Props>
 ): ComponentType<FactorifiedViewModelHOCProps<Props>> {
   // tslint:disable-next-line:variable-name
   let LifecycleWrapped = withLifecycleHooks(targetComponent, options);
@@ -43,20 +42,4 @@ export function withCompleteSetup<
   // tslint:disable-next-line:variable-name
   let DistinctPropWrapped = withDistinctProps(ViewModelWrapped, distinctOps);
   return DistinctPropWrapped;
-}
-
-/**
- * Replace complete setup HOC with this function.
- */
-export function withTestCompleteSetup<
-  VM,
-  Props extends ViewModelHOCProps<VM>,
-  State
->(
-  targetComponent: TargetViewModelHOCComponent<VM, Props, State>,
-  _options: CompleteSetupHOCOptions<VM, Props>
-): ComponentType<FactorifiedViewModelHOCProps<Props>> {
-  return function Wrapper(_props: FactorifiedViewModelHOCProps<Props>) {
-    return React.createElement(targetComponent);
-  };
 }

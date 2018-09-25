@@ -3,6 +3,10 @@ import * as React from 'react';
 import {Component, ComponentType, StatelessComponent} from 'react';
 import {Observable, Subscription} from 'rxjs';
 import {getComponentDisplayName} from './util';
+export type BasicDependency<State = never> = Readonly<{
+  performCleanUp: () => void;
+  stateStream: Observable<State>;
+}>;
 export type DependencyHOCProps<Depn> = Readonly<{dependency: Depn}>;
 export type DependencyFactoryHOCProps = Readonly<{dependencyFactory: unknown}>;
 
@@ -42,10 +46,7 @@ export type TargetDependencyHOCComponent<
  */
 export function withDependency<
   State,
-  Dependency extends Readonly<{
-    performCleanUp: () => void;
-    stateStream: Observable<State>;
-  }>,
+  Dependency extends BasicDependency<State>,
   Props extends DependencyHOCProps<Dependency>
 >(
   targetComponent: TargetDependencyHOCComponent<Dependency, Props, State>,

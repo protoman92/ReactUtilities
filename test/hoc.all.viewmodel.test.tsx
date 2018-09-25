@@ -1,9 +1,8 @@
-import {mount, shallow} from 'enzyme';
+import {mount} from 'enzyme';
 import {
-  CompleteSetupHOCOptions,
-  withCompleteSetup,
-  withTestCompleteSetup,
-} from 'hoc.all';
+  CompleteViewModelSetupHOCOptions,
+  withCompleteViewModelSetup,
+} from 'hoc.all.viewmodel';
 import {LifecycleHOCHooks} from 'hoc.lifecycle';
 import {Numbers} from 'javascriptutilities';
 import * as React from 'react';
@@ -17,9 +16,12 @@ import {
 } from './testcomponent';
 let deepEqual = require('deep-equal');
 
-describe('Complete HOC should work correctly', () => {
+describe('Complete view model HOC should work correctly', () => {
   let lifecycleHooks: LifecycleHOCHooks;
-  let completeOptions: CompleteSetupHOCOptions<ViewModel, ViewModelProps>;
+  let completeOptions: CompleteViewModelSetupHOCOptions<
+    ViewModel,
+    ViewModelProps
+  >;
   let component: ReactElement<ViewModelProps>;
   let viewModel: ViewModel;
 
@@ -32,21 +34,24 @@ describe('Complete HOC should work correctly', () => {
       componentWillUnmount: () => {},
     });
 
-    completeOptions = spy<CompleteSetupHOCOptions<ViewModel, ViewModelProps>>({
+    completeOptions = spy<
+      CompleteViewModelSetupHOCOptions<ViewModel, ViewModelProps>
+    >({
       lifecycleHooks: instance(lifecycleHooks),
       checkEquality: deepEqual,
       createViewModel: props => (props.viewModelFactory as any)(),
     });
 
     // tslint:disable-next-line:variable-name
-    let HOCTestComponent = withCompleteSetup<ViewModel, ViewModelProps, State>(
-      ViewModelTestComponent,
-      {
-        ...instance(completeOptions),
-        checkEquality: deepEqual,
-        createViewModel: props => (props.viewModelFactory as any)(),
-      }
-    );
+    let HOCTestComponent = withCompleteViewModelSetup<
+      ViewModel,
+      ViewModelProps,
+      State
+    >(ViewModelTestComponent, {
+      ...instance(completeOptions),
+      checkEquality: deepEqual,
+      createViewModel: props => (props.viewModelFactory as any)(),
+    });
 
     component = (
       <HOCTestComponent
@@ -79,37 +84,5 @@ describe('Complete HOC should work correctly', () => {
 
     /// Then
     verify(viewModel.transformState(anything())).once();
-  });
-});
-
-describe('Test complete HOC should work correctly', () => {
-  let component: ReactElement<ViewModelProps>;
-  let viewModel: ViewModel;
-
-  beforeEach(() => {
-    viewModel = mock(ViewModel);
-
-    // tslint:disable-next-line:variable-name
-    let HOCTestComponent = withTestCompleteSetup<
-      ViewModel,
-      ViewModelProps,
-      State
-    >(ViewModelTestComponent, {} as any);
-
-    component = (
-      <HOCTestComponent
-        index={0}
-        viewModelFactory={() => instance(viewModel)}
-      />
-    );
-  });
-
-  it('Wrapping base component class with complete wrapper - should work', () => {
-    /// Setup
-    let shallowed = shallow(component);
-
-    /// When && Then
-    expect(shallowed.find(ViewModelTestComponent)).toHaveLength(1);
-    shallowed.unmount();
   });
 });

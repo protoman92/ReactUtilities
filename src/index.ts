@@ -1,4 +1,5 @@
-export * from './hoc.all';
+export * from './hoc.all.dependency';
+export * from './hoc.all.viewmodel';
 export * from './hoc.dependency';
 export * from './hoc.distinctprop';
 export * from './hoc.lifecycle';
