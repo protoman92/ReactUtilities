@@ -48,70 +48,67 @@ export function withDependency<
   }>,
   Props extends DependencyHOCProps<Dependency>
 >(
+  targetComponent: TargetDependencyHOCComponent<Dependency, Props, State>,
   options: DependencyHOCOptions<Dependency, Props>
-): (
-  targetComponent: TargetDependencyHOCComponent<Dependency, Props, State>
-) => ComponentType<FactorifiedDependencyHOCProps<Props>> {
-  return targetComponent => {
-    type PureProps = Omit<Props, 'dependency'>;
-    type WrapperProps = PureProps & DependencyFactoryHOCProps;
-    let {createDependency, dependencyHooks} = options;
-    let displayName = getComponentDisplayName(targetComponent);
+): ComponentType<FactorifiedDependencyHOCProps<Props>> {
+  type PureProps = Omit<Props, 'dependency'>;
+  type WrapperProps = PureProps & DependencyFactoryHOCProps;
+  let {createDependency, dependencyHooks} = options;
+  let displayName = getComponentDisplayName(targetComponent);
 
-    return class DependencyWrapper extends Component<WrapperProps, State> {
-      public static displayName = `${displayName}_DependencyWrapper`;
+  return class DependencyWrapper extends Component<WrapperProps, State> {
+    public static displayName = `${displayName}_DependencyWrapper`;
 
-      private readonly dependency: Dependency;
-      private readonly subscription?: Subscription;
+    private readonly dependency: Dependency;
+    private readonly subscription?: Subscription;
 
-      public constructor(props: WrapperProps) {
-        super(props);
+    public constructor(props: WrapperProps) {
+      super(props);
 
-        if (dependencyHooks && dependencyHooks.beforeDependencyCreated) {
-          dependencyHooks.beforeDependencyCreated();
-        }
-
-        let dependency = createDependency(props);
-        this.dependency = dependency;
-
-        /* istanbul ignore else  */
-        if (dependency.stateStream) {
-          this.subscription = new Subscription();
-        }
+      if (dependencyHooks && dependencyHooks.beforeDependencyCreated) {
+        dependencyHooks.beforeDependencyCreated();
       }
 
-      public componentDidMount() {
-        let {dependency, subscription} = this;
+      let dependency = createDependency(props);
+      this.dependency = dependency;
 
-        /* istanbul ignore else  */
-        if (dependency.stateStream && subscription) {
-          subscription.add(
-            dependency.stateStream.subscribe(s => this.setState(s))
-          );
-        }
+      /* istanbul ignore else  */
+      if (dependency.stateStream) {
+        this.subscription = new Subscription();
       }
+    }
 
-      public componentWillUnmount() {
-        /* istanbul ignore else  */
-        if (this.dependency.performCleanUp) {
-          this.dependency.performCleanUp();
-        }
+    public componentDidMount() {
+      let {dependency, subscription} = this;
 
-        /* istanbul ignore else  */
-        if (this.subscription) {
-          this.subscription.unsubscribe();
-        }
-      }
-
-      public render() {
-        let actualProps = Object.assign(
-          Objects.deleteKeys(this.props, 'dependencyFactory'),
-          {dependency: this.dependency},
-          this.state
+      /* istanbul ignore else  */
+      if (dependency.stateStream && subscription) {
+        subscription.add(
+          dependency.stateStream.subscribe(s => this.setState(s))
         );
-
-        return React.createElement(targetComponent, actualProps as any);
       }
-    };
+    }
+
+    public componentWillUnmount() {
+      /* istanbul ignore else  */
+      if (this.dependency.performCleanUp) {
+        this.dependency.performCleanUp();
+      }
+
+      /* istanbul ignore else  */
+      if (this.subscription) {
+        this.subscription.unsubscribe();
+      }
+    }
+
+    public render() {
+      let actualProps = Object.assign(
+        Objects.deleteKeys(this.props, 'dependencyFactory'),
+        {dependency: this.dependency},
+        this.state
+      );
+
+      return React.createElement(targetComponent, actualProps as any);
+    }
   };
 }

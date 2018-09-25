@@ -27,10 +27,13 @@ describe('View model HOC should work correctly', () => {
     });
 
     // tslint:disable-next-line:variable-name
-    let HOCTestComponent = withDependency<State, Dependency, DependencyProps>({
-      dependencyHooks: instance(dependencyHooks),
-      createDependency: props => (props.dependencyFactory as any)(),
-    })(DependencyTestComponent);
+    let HOCTestComponent = withDependency<State, Dependency, DependencyProps>(
+      DependencyTestComponent,
+      {
+        dependencyHooks: instance(dependencyHooks),
+        createDependency: props => (props.dependencyFactory as any)(),
+      }
+    );
 
     componentIndex = 1000;
 
