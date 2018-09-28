@@ -4,6 +4,7 @@ import {Component, ComponentType, StatelessComponent} from 'react';
 import {Observable, Subscription} from 'rxjs';
 import {getComponentDisplayName} from './util';
 export type BasicDependency<State = never> = Readonly<{
+  performInitialization?: () => void;
   performCleanUp?: () => void;
   stateStream?: Observable<State>;
 }>;
@@ -81,6 +82,11 @@ export function withDependency<
 
     public componentDidMount() {
       let {dependency, subscription} = this;
+
+      /* istanbul ignore else  */
+      if (dependency.performInitialization) {
+        dependency.performInitialization();
+      }
 
       /* istanbul ignore else  */
       if (dependency.stateStream && subscription) {

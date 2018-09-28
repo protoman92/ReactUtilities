@@ -28,6 +28,7 @@ describe('Complete dependency HOC should work correctly', () => {
 
   beforeEach(() => {
     dependency = spy<Dependency>({
+      performInitialization: () => {},
       performCleanUp: () => {},
       stateStream: NEVER,
       transformState: () => '',
@@ -72,6 +73,7 @@ describe('Complete dependency HOC should work correctly', () => {
     mounted.unmount();
 
     /// When && Then
+    verify(dependency.performInitialization()).once();
     verify(dependency.performCleanUp()).once();
     verify(lifecycleHooks.onConstruction!()).once();
     verify(lifecycleHooks.componentDidMount!()).once();

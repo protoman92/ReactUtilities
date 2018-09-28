@@ -38,6 +38,7 @@ describe('View model HOC should work correctly', () => {
     componentIndex = 1000;
 
     dependency = spy<Dependency>({
+      performInitialization: () => {},
       performCleanUp: () => {},
       stateStream: NEVER,
       transformState: () => '',
@@ -57,6 +58,7 @@ describe('View model HOC should work correctly', () => {
     mounted.unmount();
 
     /// When && Then
+    verify(dependency.performInitialization()).once();
     verify(dependency.performCleanUp()).once();
     verify(dependencyHooks.beforeDependencyCreated!()).once();
   });

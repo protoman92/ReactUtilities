@@ -1,7 +1,7 @@
 import {NeverProp} from 'javascriptutilities';
 import * as React from 'react';
 import {Observable} from 'rxjs';
-import {ReduxViewModel} from '../src';
+import {ReduxViewModel, BasicDependency} from '../src';
 export let indexDivClass = 'index-div';
 export let stateDivClass = 'state-div';
 
@@ -11,11 +11,13 @@ export function transformState({a, b}: NeverProp<State>) {
   return `${a}-${b}`;
 }
 
-export type Dependency = Readonly<{
-  performCleanUp: () => void;
-  stateStream: Observable<State>;
-  transformState: (state: Partial<NeverProp<State>>) => string;
-}>;
+export type Dependency = BasicDependency<State> &
+  Readonly<{
+    performInitialization: () => void;
+    performCleanUp: () => void;
+    stateStream: Observable<State>;
+    transformState: (state: Partial<NeverProp<State>>) => string;
+  }>;
 
 export class ViewModel implements ReduxViewModel<State> {
   public static instance: number;
