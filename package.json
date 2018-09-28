@@ -1,6 +1,6 @@
 {
   "name": "react-base-utilities-js",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "description": "Utilities for React applications.",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
